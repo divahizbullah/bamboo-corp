@@ -72,7 +72,7 @@ try{app=initializeApp(CFG);auth=getAuth(app);db=getFirestore(app)}catch(e){conso
 window.pickB=b=>{B=b;document.body.className=b;$('#pick').classList.add('hide');$('#login').classList.remove('hide');$('#lt').textContent='Masuk – '+NAMA[b]}
 window.backPick=()=>{B=null;document.body.className='';$('#login').classList.add('hide');$('#pick').classList.remove('hide')}
 window.doLogin=async e=>{e.preventDefault();$('#le').textContent='';if(!CFG.apiKey)return $('#le').textContent='Firebase Config belum diisi di index.html.';
-try{const un=$('#em').value.trim().toLowerCase();await signInWithEmailAndPassword(auth,un+'@bamboocorp.app',$('#pw').value)}catch(er){$('#le').textContent='Username atau kata sandi salah ('+er.code+')'}}
+try{const un=$('#em').value.trim().toLowerCase();await signInWithEmailAndPassword(auth,un.includes('@')?un:un+'@bamboocorp.app',$('#pw').value)}catch(er){$('#le').textContent='Username atau kata sandi salah ('+er.code+')'}}
 if(auth)onAuthStateChanged(auth,async u=>{if(!u||!B){U=null;return}
 try{const p=await getDoc(doc(db,'users',u.uid)),d=p.exists()?p.data():null;
 if(!d||!(d.businesses||[]).includes(B)){await signOut(auth);$('#le').textContent='Akun ini tidak punya akses ke '+B+'.';return}

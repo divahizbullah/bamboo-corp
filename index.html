@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Business Management – GSB & BDP ART</title>
+<style>
+:root{--p:#0f2747;--a:#c9a227;--bg:#f4f5f8;--t:#1b2230;--m:#667085;--b:#e1e4ea}
+body.BDP{--p:#3b1458;--a:#f26a1b}
+*{box-sizing:border-box}body{margin:0;font:15px/1.45 "Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--t)}
+h1,h2,h3{margin:0}button,input,select,textarea{font:inherit}
+input,select,textarea{width:100%;padding:8px 10px;border:1px solid var(--b);border-radius:8px;background:#fff}
+label{display:block;font-size:13px;color:var(--m);margin:8px 0 3px}
+button{border:1px solid var(--b);background:#fff;padding:7px 12px;border-radius:8px;cursor:pointer}
+button.pr{background:var(--p);color:#fff;border-color:var(--p)}button.ac{background:var(--a);border-color:var(--a);color:#111}button.dg{color:#b42318}
+.hide{display:none!important}
+#pick{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(120deg,#0f2747 50%,#3b1458 50%)}
+#pick .in{max-width:900px;width:100%}#pick h1{color:#fff;text-align:center;margin-bottom:20px;font-size:26px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.bc{background:#fff;border-radius:16px;padding:26px;display:flex;flex-direction:column;gap:8px}
+.bc .lg{width:64px;height:64px;border-radius:14px;display:grid;place-items:center;font-weight:800;font-size:20px;color:#fff}.bc small{color:var(--m)}
+#login{min-height:100vh;display:grid;place-items:center;padding:20px}
+#login form{background:#fff;padding:26px;border-radius:16px;width:100%;max-width:360px;border-top:6px solid var(--a)}
+#app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+#side{background:var(--p);color:#fff;padding:16px;display:flex;flex-direction:column;gap:4px}
+#side .br{font-weight:700;margin-bottom:12px;display:flex;gap:10px;align-items:center}
+#side .br img{width:38px;height:38px;border-radius:8px;object-fit:contain;background:#fff}
+#side button{background:none;color:#fff;border:0;text-align:left;padding:9px 10px;border-radius:8px}
+#side button.on{background:rgba(255,255,255,.16);box-shadow:inset 3px 0 var(--a)}
+#main{padding:22px;min-width:0}
+.hd{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.card{background:#fff;border-radius:12px;padding:16px;margin-bottom:14px;border:1px solid var(--b)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:14px}
+.st b{display:block;font-size:20px;color:var(--p)}.st span{font-size:13px;color:var(--m)}
+.sc{overflow-x:auto}table{width:100%;border-collapse:collapse}th,td{padding:8px;border-bottom:1px solid var(--b);text-align:left;vertical-align:top}th{font-size:13px;color:var(--m)}
+.bg{padding:2px 8px;border-radius:99px;font-size:12px;background:#eef1f6}.bg.ok{background:#d9f3e3;color:#106a38}.bg.w{background:#fff1d1;color:#8a5a00}.bg.x{background:#fde0de;color:#b42318}
+dialog{border:0;border-radius:14px;padding:18px;width:min(820px,96vw);max-height:92vh}dialog::backdrop{background:rgba(0,0,0,.45)}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.it{display:grid;grid-template-columns:2fr repeat(3,1fr) .7fr .8fr 1fr auto;gap:6px;margin-bottom:6px}
+#toast{position:fixed;bottom:18px;right:18px;background:#111;color:#fff;padding:10px 14px;border-radius:10px;z-index:99}
+#doc{position:fixed;inset:0;background:#555;overflow:auto;padding:14px;z-index:50}
+#doc .tb{display:flex;gap:8px;justify-content:center;margin-bottom:10px}
+.paper{background:#fff;color:#000;width:210mm;max-width:100%;min-height:297mm;margin:0 auto;padding:16mm;font:11pt/1.4 Georgia,"Times New Roman",serif}
+.paper table{margin:10px 0}.paper th,.paper td{border:1px solid #999;padding:5px;color:#000;font-size:10pt}.paper th{background:#eee}
+.paper .kop{display:flex;gap:12px;align-items:center;border-bottom:3px double #000;padding-bottom:8px}.paper .kop img{height:64px}
+.paper.BDP .kop{background:var(--p);color:#fff;padding:12px;border:0;border-radius:6px}
+.paper .tot td{border:0;text-align:right}.paper .ttd{display:flex;justify-content:flex-end;margin-top:30px;text-align:center}
+@media(max-width:800px){#app{grid-template-columns:1fr}#side{flex-direction:row;flex-wrap:wrap}#side .br{width:100%}.r2{grid-template-columns:1fr}.it{grid-template-columns:1fr 1fr}}
+@media print{body>*:not(#doc){display:none!important}#doc{position:static;background:none;padding:0}#doc .tb{display:none}.paper{margin:0;padding:12mm;width:auto}@page{size:A4;margin:0}tr{break-inside:avoid}thead{display:table-header-group}}
+</style></head><body>
+<div id="pick"><div class="in"><h1>Business Management</h1><div class="cards">
+<div class="bc"><div class="lg" style="background:#0f2747">GSB</div><h2>CV. GOGO SUKSES BERSAMA</h2><small>Engineering & Technical Services</small><p>Solusi CCTV, AC, instalasi, maintenance, dan pengadaan teknik.</p><button class="pr" onclick="pickB('GSB')">MASUK DASHBOARD</button></div>
+<div class="bc"><div class="lg" style="background:#3b1458">BDP</div><h2>BAMBOO DIGITAL PRINTING</h2><small>BDP ART · Digital Printing & Creative</small><p>Solusi percetakan, desain grafis, advertising, dan kebutuhan cetak.</p><button class="pr" style="background:#3b1458" onclick="pickB('BDP')">MASUK DASHBOARD</button></div>
+</div></div></div>
+<div id="login" class="hide"><form onsubmit="doLogin(event)"><h2 id="lt"></h2><label>Email</label><input id="em" type="email" required><label>Kata sandi</label><input id="pw" type="password" required><p id="le" style="color:#b42318;font-size:13px"></p><button class="pr" style="width:100%">Masuk</button><p style="text-align:center"><a href="#" onclick="backPick();return false">← Pilih usaha lain</a></p></form></div>
+<div id="app" class="hide"><div id="side"></div><div id="main"></div></div>
+<div id="doc" class="hide"></div><dialog id="dlg"><form method="dialog" id="fm"></form></dialog><div id="toast" class="hide"></div>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import{getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import{getFirestore,collection,doc,getDoc,getDocs,setDoc,addDoc,deleteDoc,runTransaction,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+/* ISI DENGAN FIREBASE WEB CONFIG ANDA (Project settings > Your apps > Web app) */
+const CFG={apiKey:"",authDomain:"",projectId:"",storageBucket:"",messagingSenderId:"",appId:""};
+const NAMA={GSB:'CV. GOGO SUKSES BERSAMA',BDP:'BAMBOO DIGITAL PRINTING (BDP ART)'};
+let B=null,U=null,ST={},CU=[],app,auth,db;
+const $=s=>document.querySelector(s),E=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),
+R=n=>'Rp '+Math.round(+n||0).toLocaleString('id-ID'),D=d=>d?new Date(d+'T00:00:00').toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}):'-',
+td=()=>new Date().toISOString().slice(0,10);
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.remove('hide');setTimeout(()=>t.classList.add('hide'),3000)}
+const col=n=>collection(db,'businesses',B,n);
+async function list(n){const s=await getDocs(col(n));return s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.tanggal||'')>(a.tanggal||'')?1:-1)}
+async function save(n,id,o){const now=serverTimestamp(),d={...o,businessId:B,updatedAt:now};if(id){await setDoc(doc(col(n),id),d,{merge:true});return id}d.createdAt=now;d.createdBy=U.email;return(await addDoc(col(n),d)).id}
+const guard=async f=>{try{await f()}catch(e){console.error(e);toast('Gagal: '+(e.code||e.message))}};
+try{app=initializeApp(CFG);auth=getAuth(app);db=getFirestore(app)}catch(e){console.error(e)}
+window.pickB=b=>{B=b;document.body.className=b;$('#pick').classList.add('hide');$('#login').classList.remove('hide');$('#lt').textContent='Masuk – '+NAMA[b]}
+window.backPick=()=>{B=null;document.body.className='';$('#login').classList.add('hide');$('#pick').classList.remove('hide')}
+window.doLogin=async e=>{e.preventDefault();$('#le').textContent='';if(!CFG.apiKey)return $('#le').textContent='Firebase Config belum diisi di index.html.';
+try{await signInWithEmailAndPassword(auth,$('#em').value,$('#pw').value)}catch(er){$('#le').textContent='Email atau kata sandi salah ('+er.code+')'}}
+if(auth)onAuthStateChanged(auth,async u=>{if(!u||!B){U=null;return}
+try{const p=await getDoc(doc(db,'users',u.uid)),d=p.exists()?p.data():null;
+if(!d||!(d.businesses||[]).includes(B)){await signOut(auth);$('#le').textContent='Akun ini tidak punya akses ke '+B+'.';return}
+U={uid:u.uid,email:u.email,role:d.role||'staff'};await loadAll();$('#login').classList.add('hide');$('#app').classList.remove('hide');go('dash')}
+catch(er){$('#le').textContent='Gagal memuat akses: '+(er.code||er.message)}});
+window.logout=async()=>{await signOut(auth);location.reload()};
+async function loadAll(){const s=await getDoc(doc(col('settings'),'main'));ST=s.exists()?s.data():{};CU=await list('customers')}
+const MENU=[['dash','Dashboard'],['cust','Data Pelanggan'],['quo','Daftar Penawaran'],['inv','Daftar Invoice'],['lap','Laporan'],['set','Pengaturan Usaha']];
+window.go=async v=>{$('#side').innerHTML=`<div class="br">${ST.logo?`<img src="${E(ST.logo)}" alt="">`:''}<span>${E(ST.nama||NAMA[B])}</span></div>`+MENU.map(([k,l])=>`<button class="${k==v?'on':''}" onclick="go('${k}')">${l}</button>`).join('')+`<button onclick="logout()">Logout</button>`;
+$('#main').innerHTML='<p>Memuat…</p>';await guard(async()=>{$('#main').innerHTML=await VIEW[v]()})}
+const VIEW={dash,cust,quo:()=>docList('quotations'),inv:()=>docList('invoices'),lap,set:setView};
+const paid=i=>(i.payments||[]).reduce((a,p)=>a+(+p.jumlah||0),0);
+function stInv(i){if(i.status=='Dibatalkan'||i.status=='Draft')return i.status;const p=paid(i);if(i.total>0&&p>=i.total-0.5)return'Lunas';if(i.due&&i.due<td())return'Jatuh tempo';return p>0?'Dibayar sebagian':'Belum dibayar'}
+const cls=s=>/Lunas|Disetujui/.test(s)?'ok':/tempo|Ditolak|Batal/.test(s)?'x':/sebagian|Terkirim|Belum/.test(s)?'w':'';
+async function dash(){const q=await list('quotations'),v=await list('invoices'),tb=v.filter(i=>!/Dibatalkan|Draft/.test(i.status||'')),tot=tb.reduce((a,i)=>a+i.total,0),pd=tb.reduce((a,i)=>a+paid(i),0),bln={};
+v.forEach(i=>{const k=(i.tanggal||'').slice(0,7);bln[k]=(bln[k]||0)+paid(i)});const mx=Math.max(1,...Object.values(bln)),ks=Object.keys(bln).sort().slice(-6),c=(l,x)=>`<div class="card st"><b>${x}</b><span>${l}</span></div>`;
+return`<div class="hd"><h2>Dashboard ${E(ST.nama||NAMA[B])}</h2></div><div class="grid">${c('Total penawaran',q.length)}${c('Nilai penawaran',R(q.reduce((a,i)=>a+i.total,0)))}${c('Menunggu persetujuan',q.filter(i=>i.status=='Terkirim').length)}${c('Disetujui',q.filter(i=>i.status=='Disetujui').length)}${c('Total invoice',v.length)}${c('Total tagihan',R(tot))}${c('Pembayaran diterima',R(pd))}${c('Piutang',R(tot-pd))}${c('Invoice jatuh tempo',v.filter(i=>stInv(i)=='Jatuh tempo').length)}</div>
+<div class="card"><h3>Pembayaran diterima per bulan</h3>${ks.map(k=>`<div style="display:flex;gap:8px;align-items:center;margin:6px 0"><span style="width:70px;font-size:13px">${k}</span><div style="height:16px;border-radius:4px;background:var(--a);width:${Math.max(2,bln[k]/mx*60)}%"></div><span style="font-size:13px">${R(bln[k])}</span></div>`).join('')||'<p style="color:var(--m)">Belum ada pembayaran.</p>'}</div>
+<div class="card sc"><h3>Transaksi terakhir</h3><table>${[...q.map(x=>({...x,j:'Penawaran'})),...v.map(x=>({...x,j:'Invoice'}))].sort((a,b)=>b.tanggal>a.tanggal?1:-1).slice(0,6).map(x=>`<tr><td>${D(x.tanggal)}</td><td>${x.j}</td><td>${E(x.nomor)}</td><td>${E(x.cname)}</td><td>${R(x.total)}</td></tr>`).join('')||'<tr><td>Belum ada transaksi</td></tr>'}</table></div>`}
+async function cust(){CU=await list('customers');const q=(window.CQ||'').toLowerCase(),l=CU.filter(c=>JSON.stringify(c).toLowerCase().includes(q));
+return`<div class="hd"><h2>Data Pelanggan</h2><button class="pr" onclick="cForm()">+ Tambah pelanggan</button></div><div class="card"><input placeholder="Cari pelanggan…" value="${E(window.CQ||'')}" onchange="CQ=this.value;go('cust')"></div><div class="card sc"><table><tr><th>Nama</th><th>PIC</th><th>Telepon</th><th>Alamat</th><th></th></tr>${l.map(c=>`<tr><td>${E(c.nama)}</td><td>${E(c.pic)}</td><td>${E(c.telp)}</td><td>${E(c.alamat)}</td><td><button onclick="cHist('${c.id}')">Riwayat</button> <button onclick="cForm('${c.id}')">Edit</button> <button class="dg" onclick="cDel('${c.id}')">Hapus</button></td></tr>`).join('')||'<tr><td colspan=5>Belum ada pelanggan.</td></tr>'}</table></div>`}
+const F=(n,l,v='',t='text',x='')=>`<div><label>${l}</label><input name="${n}" type="${t}" value="${E(v)}" ${x}></div>`;
+window.cForm=id=>{const c=CU.find(x=>x.id==id)||{};$('#fm').innerHTML=`<h3>${id?'Edit':'Tambah'} pelanggan</h3><div class="r2">${F('nama','Nama perusahaan / perorangan',c.nama,'text','required')}${F('pic','Nama PIC',c.pic)}${F('telp','Telepon / WhatsApp',c.telp)}${F('email','Email',c.email,'email')}${F('npwp','NPWP (opsional)',c.npwp)}</div><label>Alamat</label><textarea name="alamat" rows=2>${E(c.alamat)}</textarea><label>Catatan</label><textarea name="cat" rows=2>${E(c.cat)}</textarea><p><button type="button" onclick="$('#dlg').close()">Batal</button> <button class="pr">Simpan</button></p>`;
+$('#fm').onsubmit=e=>{e.preventDefault();guard(async()=>{await save('customers',id,Object.fromEntries(new FormData($('#fm'))));$('#dlg').close();toast('Pelanggan disimpan');go('cust')})};$('#dlg').showModal()}
+window.cDel=id=>{if(confirm('Hapus pelanggan ini?'))guard(async()=>{await deleteDoc(doc(col('customers'),id));toast('Dihapus');go('cust')})}
+window.cHist=async id=>{const c=CU.find(x=>x.id==id),a=[...(await list('quotations')).map(x=>({...x,j:'Penawaran'})),...(await list('invoices')).map(x=>({...x,j:'Invoice'}))].filter(x=>x.cid==id);
+$('#fm').innerHTML=`<h3>Riwayat – ${E(c.nama)}</h3><div class="sc"><table>${a.map(x=>`<tr><td>${D(x.tanggal)}</td><td>${x.j}</td><td>${E(x.nomor)}</td><td>${R(x.total)}</td><td>${E(x.status)}</td></tr>`).join('')||'<tr><td>Belum ada transaksi</td></tr>'}</table></div><button type="button" onclick="$('#dlg').close()">Tutup</button>`;$('#dlg').showModal()}
+const HQ=()=>B=='BDP'?['Produk','Ukuran','Bahan','Finishing']:['Barang / jasa','Spesifikasi'];
+async function docList(n){const inv=n=='invoices',l=await list(n),f=window.DF||'',s=(window.DS||'').toLowerCase(),
+rows=l.map(x=>({...x,s:inv?stInv(x):x.status})).filter(x=>(!f||x.s==f)&&JSON.stringify([x.nomor,x.cname,x.perihal]).toLowerCase().includes(s)),
+sts=inv?['Draft','Belum dibayar','Dibayar sebagian','Lunas','Jatuh tempo','Dibatalkan']:['Draft','Terkirim','Disetujui','Ditolak'],g=inv?'inv':'quo';
+return`<div class="hd"><h2>Daftar ${inv?'Invoice':'Penawaran'}</h2><button class="pr" onclick="dForm('${n}')">+ Buat ${inv?'invoice':'penawaran'}</button></div><div class="card r2"><input placeholder="Cari nomor / pelanggan…" value="${E(window.DS||'')}" onchange="DS=this.value;go('${g}')"><select onchange="DF=this.value;go('${g}')"><option value="">Semua status</option>${sts.map(x=>`<option ${f==x?'selected':''}>${x}</option>`).join('')}</select></div>
+<div class="card sc"><table><tr><th>Nomor</th><th>Tanggal</th><th>Pelanggan</th><th>Total</th>${inv?'<th>Sisa</th>':''}<th>Status</th><th></th></tr>${rows.map(x=>`<tr><td>${E(x.nomor)}</td><td>${D(x.tanggal)}</td><td>${E(x.cname)}</td><td>${R(x.total)}</td>${inv?`<td>${R(x.total-paid(x))}</td>`:''}<td>${inv?`<span class="bg ${cls(x.s)}">${x.s}</span>`:`<select onchange="setSt('${n}','${x.id}',this.value)">${sts.map(o=>`<option ${o==x.status?'selected':''}>${o}</option>`).join('')}</select>`}</td>
+<td><button onclick="view_('${n}','${x.id}')">Lihat / PDF</button> <button onclick="dForm('${n}','${x.id}')">Edit</button>${inv?` <button class="ac" onclick="payForm('${x.id}')">Bayar</button> <button onclick="setSt('${n}','${x.id}','Dibatalkan')">Batalkan</button>`:` <button onclick="dup('${x.id}')">Duplikat</button> <button class="ac" onclick="toInv('${x.id}')">Jadikan invoice</button>`} <button class="dg" onclick="dDel('${n}','${x.id}')">Hapus</button></td></tr>`).join('')||'<tr><td colspan=7>Belum ada data.</td></tr>'}</table></div>`}
+window.setSt=(n,id,s)=>guard(async()=>{await save(n,id,{status:s});toast('Status: '+s);go(n=='invoices'?'inv':'quo')});
+window.dDel=(n,id)=>{if(confirm('Hapus dokumen ini?'))guard(async()=>{await deleteDoc(doc(col(n),id));toast('Dihapus');go(n=='invoices'?'inv':'quo')})};
+const ROM=['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
+async function nextNo(type,tgl){const y=tgl.slice(0,4),m=+tgl.slice(5,7),k=type=='quotations'?'QUO':'INV',ref=doc(col('counters'),k+'-'+y),f=ST.fmt||'{B}/{T}/{N}/{M}/{Y}';
+const n=await runTransaction(db,async t=>{const s=await t.get(ref),v=(s.exists()?s.data().last:0)+1;t.set(ref,{last:v,businessId:B,updatedAt:serverTimestamp()});return v});
+return f.replace('{B}',B).replace('{T}',k).replace('{N}',String(n).padStart(3,'0')).replace('{M}',ROM[m-1]).replace('{Y}',y)}
+const itRow=(r={})=>{const h=HQ();return`<div class="it" data-i><input name="n" placeholder="${h[0]}" value="${E(r.n)}" required><input name="a" placeholder="${h[1]}" value="${E(r.a)}">${B=='BDP'?`<input name="b" placeholder="${h[2]}" value="${E(r.b)}"><input name="c" placeholder="${h[3]}" value="${E(r.c)}">`:'<span></span><span></span>'}<input name="q" type="number" min="0" step="any" placeholder="Qty" value="${r.q??1}" oninput="calc()"><input name="u" placeholder="Satuan" value="${E(r.u||'pcs')}"><input name="h" type="number" min="0" step="any" placeholder="Harga" value="${r.h??''}" oninput="calc()"><button type="button" class="dg" onclick="this.parentNode.remove();calc()">×</button></div>`};
+window.addIt=()=>$('#its').insertAdjacentHTML('beforeend',itRow());
+window.calc=()=>{let s=0;document.querySelectorAll('[data-i]').forEach(r=>s+=(+r.querySelector('[name=q]').value||0)*(+r.querySelector('[name=h]').value||0));const d=+$('#fm [name=disc]').value||0,p=+$('#fm [name=ppn]').value||0,b=Math.max(0,s-d),t=b+b*p/100;$('#tot').innerHTML=`Subtotal ${R(s)} · Setelah diskon ${R(b)} · PPN ${R(b*p/100)} · <b>Total ${R(t)}</b>`;return{sub:s,total:t}}
+window.dForm=async(n,id,pre)=>{const inv=n=='invoices';CU=await list('customers');const x=id?(await getDoc(doc(col(n),id))).data():(pre||{}),its=x.items&&x.items.length?x.items:[{}];
+$('#fm').innerHTML=`<h3>${id?'Edit':'Buat'} ${inv?'invoice':'penawaran'} ${B}</h3><div class="r2"><div><label>Pelanggan</label><select name="cid" required><option value="">Pilih…</option>${CU.map(c=>`<option value="${c.id}" ${c.id==x.cid?'selected':''}>${E(c.nama)}</option>`).join('')}</select></div>${F('tanggal','Tanggal',x.tanggal||td(),'date','required')}${F('perihal',B=='BDP'?'Nama proyek':'Perihal pekerjaan',x.perihal,'text','required')}
+${inv?F('due','Jatuh tempo',x.due,'date'):F('valid','Masa berlaku penawaran',x.valid||'14 hari')}${F('est',B=='BDP'?'Deadline pekerjaan':'Estimasi pengerjaan',x.est)}${inv?F('ref','Referensi nomor penawaran',x.ref):''}</div>
+<label>Rincian</label><div id="its">${its.map(itRow).join('')}</div><button type="button" onclick="addIt()">+ Tambah baris</button>
+<div class="r2">${F('disc','Diskon (Rp)',x.disc||0,'number','step=any min=0 oninput=calc()')}${F('ppn','PPN (%) — 0 jika tanpa PPN',x.ppn||0,'number','step=any min=0 oninput=calc()')}</div><p id="tot"></p>
+<label>Syarat & ketentuan</label><textarea name="tnc" rows=3>${E(x.tnc??ST.tnc??'')}</textarea><label>Catatan</label><textarea name="cat" rows=2>${E(x.cat)}</textarea><p><button type="button" onclick="$('#dlg').close()">Batal</button> <button class="pr">Simpan</button></p>`;
+$('#fm').onsubmit=e=>{e.preventDefault();guard(async()=>{const fd=new FormData($('#fm')),c=CU.find(z=>z.id==fd.get('cid')),items=[...document.querySelectorAll('[data-i]')].map(r=>{const g=k=>(r.querySelector(`[name=${k}]`)||{}).value||'';return{n:g('n'),a:g('a'),b:g('b'),c:g('c'),q:+g('q')||0,u:g('u'),h:+g('h')||0}}),t=calc(),
+o={cid:c.id,cname:c.nama,caddr:c.alamat||'',cpic:c.pic||'',tanggal:fd.get('tanggal'),perihal:fd.get('perihal'),est:fd.get('est')||'',items,disc:+fd.get('disc')||0,ppn:+fd.get('ppn')||0,sub:t.sub,total:t.total,tnc:fd.get('tnc')||'',cat:fd.get('cat')||''};
+if(inv){o.due=fd.get('due')||'';o.ref=fd.get('ref')||'';if(!id)o.payments=[]}else o.valid=fd.get('valid')||'';
+if(!id){o.nomor=await nextNo(n,o.tanggal);o.status=inv?'Belum dibayar':'Draft'}
+await save(n,id,o);$('#dlg').close();toast('Tersimpan: '+(o.nomor||'perubahan'));go(inv?'inv':'quo')})};calc();$('#dlg').showModal()}
+window.dup=id=>guard(async()=>{const x=(await getDoc(doc(col('quotations'),id))).data();await dForm('quotations',null,{...x,nomor:undefined,tanggal:td()})});
+window.toInv=id=>guard(async()=>{const x=(await getDoc(doc(col('quotations'),id))).data();await dForm('invoices',null,{...x,ref:x.nomor,tanggal:td()})});
+window.payForm=async id=>{const x=(await getDoc(doc(col('invoices'),id))).data();
+$('#fm').innerHTML=`<h3>Pembayaran – ${E(x.nomor)}</h3><p>Total ${R(x.total)} · Diterima ${R(paid(x))} · <b>Sisa ${R(x.total-paid(x))}</b></p><div class="r2">${F('jumlah','Nominal',Math.max(0,x.total-paid(x)),'number','min=1 step=any required')}${F('tgl','Tanggal',td(),'date','required')}<div><label>Metode</label><select name="metode"><option>Transfer</option><option>Tunai</option><option>QRIS</option></select></div>${F('ket','Keterangan (DP / pelunasan)')}</div>
+<h4>Riwayat pembayaran</h4><table>${(x.payments||[]).map(p=>`<tr><td>${D(p.tgl)}</td><td>${R(p.jumlah)}</td><td>${E(p.metode)}</td><td>${E(p.ket)}</td></tr>`).join('')||'<tr><td>Belum ada pembayaran</td></tr>'}</table><p><button type="button" onclick="$('#dlg').close()">Tutup</button> <button class="pr">Catat pembayaran</button></p>`;
+$('#fm').onsubmit=e=>{e.preventDefault();guard(async()=>{const p=Object.fromEntries(new FormData($('#fm')));p.jumlah=+p.jumlah;await save('invoices',id,{payments:[...(x.payments||[]),p]});$('#dlg').close();toast('Pembayaran dicatat');go('inv')})};$('#dlg').showModal()}
+window.view_=async(n,id)=>{const x=(await getDoc(doc(col(n),id))).data(),inv=n=='invoices',s=ST,bdp=B=='BDP',pd=paid(x),
+rows=x.items.map((r,i)=>`<tr><td>${i+1}</td><td>${E(r.n)}${bdp?'':'<br><small>'+E(r.a)+'</small>'}</td>${bdp?`<td>${E(r.a)}</td><td>${E(r.b)}</td><td>${E(r.c)}</td>`:''}<td>${r.q} ${E(r.u)}</td><td align=right>${R(r.h)}</td><td align=right>${R(r.q*r.h)}</td></tr>`).join(''),
+head=`<th>No</th><th>${bdp?'Produk':'Uraian pekerjaan'}</th>${bdp?'<th>Ukuran</th><th>Bahan</th><th>Finishing</th>':''}<th>Qty</th><th>Harga</th><th>Jumlah</th>`;
+$('#doc').innerHTML=`<div class="tb"><button onclick="$('#doc').classList.add('hide')">Tutup</button><button class="ac" onclick="window.print()">Cetak / Simpan PDF</button><button onclick="wa('${E(x.nomor)}','${E(x.cname)}',${x.total})">Bagikan WhatsApp</button></div>
+<div class="paper ${B}"><div class="kop">${s.logo?`<img src="${E(s.logo)}" alt="">`:''}<div><b style="font-size:15pt">${E(s.nama||NAMA[B])}</b><br><small>${E(s.alamat)}<br>${[s.telp&&'Telp: '+s.telp,s.email,s.web].filter(Boolean).map(E).join(' · ')}${s.npwp?'<br>NPWP: '+E(s.npwp):''}</small></div></div>
+<h2 style="text-align:center;margin:14px 0 2px;${bdp?'color:var(--p)':''}">${inv?'INVOICE':bdp?'PENAWARAN PRODUK':'SURAT PENAWARAN HARGA'}</h2><p style="text-align:center;margin:0 0 12px">Nomor: ${E(x.nomor)}</p>
+<table style="border:0"><tr><td style="border:0">Tanggal: ${D(x.tanggal)}${inv&&x.due?'<br>Jatuh tempo: '+D(x.due):''}${x.ref?'<br>Ref. penawaran: '+E(x.ref):''}</td><td style="border:0">Kepada Yth.<br><b>${E(x.cname)}</b>${x.cpic?'<br>u.p. '+E(x.cpic):''}<br>${E(x.caddr)}</td></tr></table>
+<p>${bdp?'Proyek':'Perihal'}: <b>${E(x.perihal)}</b>${x.est?' · '+(bdp?'Deadline':'Estimasi')+': '+E(x.est):''}${!inv&&x.valid?' · Berlaku: '+E(x.valid):''}</p>
+<table><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table>
+<table class="tot"><tr><td>Subtotal</td><td width=130>${R(x.sub)}</td></tr>${x.disc?`<tr><td>Diskon</td><td>- ${R(x.disc)}</td></tr>`:''}${x.ppn?`<tr><td>PPN ${x.ppn}%</td><td>${R((x.sub-x.disc)*x.ppn/100)}</td></tr>`:''}<tr><td><b>Total</b></td><td><b>${R(x.total)}</b></td></tr>${inv?`<tr><td>Pembayaran diterima</td><td>${R(pd)}</td></tr><tr><td><b>Sisa tagihan</b></td><td><b>${R(x.total-pd)}</b></td></tr>`:''}</table>
+${inv&&s.bank?`<p><b>Pembayaran ke:</b> ${E(s.bank)} ${E(s.rek)} a.n. ${E(s.pemilik)}</p>`:''}${x.tnc?`<p><b>Syarat & ketentuan:</b><br>${E(x.tnc).replace(/\n/g,'<br>')}</p>`:''}${x.cat?`<p>Catatan: ${E(x.cat)}</p>`:''}
+<div class="ttd"><div>${E(s.kota||'')}${s.kota?', ':''}${D(x.tanggal)}<br>Hormat kami,<br><br><br><br><b><u>${E(s.pj||'................')}</u></b><br>${E(s.jabatan)}</div></div>
+${s.footer?`<p style="text-align:center;font-size:9pt;border-top:1px solid #999;margin-top:20px">${E(s.footer)}</p>`:''}</div>`;$('#doc').classList.remove('hide')}
+window.wa=(no,cn,t)=>window.open('https://wa.me/?text='+encodeURIComponent(`${ST.nama||NAMA[B]}\nDokumen ${no} untuk ${cn}\nTotal ${R(t)}`));
+async function lap(){const v=await list('invoices'),q=await list('quotations'),by={};v.forEach(i=>{const k=(i.tanggal||'').slice(0,7);by[k]=by[k]||{n:0,t:0,p:0};by[k].n++;by[k].t+=i.total;by[k].p+=paid(i)});
+const pu=v.filter(i=>i.total-paid(i)>0.5&&!/Dibatalkan|Draft/.test(i.status)),op=q.filter(i=>/Draft|Terkirim/.test(i.status));window.EXP={v,q};
+return`<div class="hd"><h2>Laporan</h2><span><button onclick="csv('inv')">Export invoice CSV</button> <button onclick="csv('quo')">Export penawaran CSV</button></span></div>
+<div class="card sc"><h3>Pendapatan bulanan</h3><table><tr><th>Bulan</th><th>Invoice</th><th>Ditagih</th><th>Diterima</th></tr>${Object.keys(by).sort().reverse().map(k=>`<tr><td>${k}</td><td>${by[k].n}</td><td>${R(by[k].t)}</td><td>${R(by[k].p)}</td></tr>`).join('')||'<tr><td>Belum ada data</td></tr>'}</table></div>
+<div class="card sc"><h3>Piutang</h3><table>${pu.map(i=>`<tr><td>${E(i.nomor)}</td><td>${E(i.cname)}</td><td>${R(i.total-paid(i))}</td><td>${stInv(i)}</td></tr>`).join('')||'<tr><td>Tidak ada piutang</td></tr>'}</table></div>
+<div class="card sc"><h3>Penawaran belum disetujui</h3><table>${op.map(i=>`<tr><td>${E(i.nomor)}</td><td>${E(i.cname)}</td><td>${R(i.total)}</td><td>${i.status}</td></tr>`).join('')||'<tr><td>Tidak ada</td></tr>'}</table></div>`}
+window.csv=k=>{const a=k=='inv'?EXP.v:EXP.q,c=['nomor,tanggal,pelanggan,total,dibayar,status',...a.map(i=>[i.nomor,i.tanggal,i.cname,i.total,k=='inv'?paid(i):'',k=='inv'?stInv(i):i.status].map(x=>'"'+String(x??'').replace(/"/g,'""')+'"').join(','))].join('\n'),l=document.createElement('a');l.href=URL.createObjectURL(new Blob([c],{type:'text/csv'}));l.download=B+'-'+k+'-'+td()+'.csv';l.click()}
+async function setView(){await loadAll();const s=ST;return`<div class="hd"><h2>Pengaturan ${B}</h2></div><form class="card" onsubmit="saveSet(event)"><div class="r2">${F('nama','Nama usaha',s.nama||NAMA[B])}${F('logo','URL logo (gambar)',s.logo,'url')}${F('telp','Telepon',s.telp)}${F('email','Email',s.email,'email')}${F('web','Website',s.web)}${F('npwp','NPWP',s.npwp)}${F('kota','Kota (untuk tanda tangan)',s.kota)}${F('pj','Nama penanggung jawab',s.pj)}${F('jabatan','Jabatan',s.jabatan)}${F('bank','Nama bank',s.bank)}${F('rek','Nomor rekening',s.rek)}${F('pemilik','Nama pemilik rekening',s.pemilik)}${F('fmt','Format nomor ({B} {T} {N} {M} {Y})',s.fmt||'{B}/{T}/{N}/{M}/{Y}')}</div><label>Alamat</label><textarea name="alamat" rows=2>${E(s.alamat)}</textarea><label>Syarat & ketentuan default</label><textarea name="tnc" rows=3>${E(s.tnc)}</textarea><label>Footer surat</label><input name="footer" value="${E(s.footer)}"><p><button class="pr">Simpan pengaturan</button></p><p style="color:var(--m);font-size:13px">Nomor dokumen kembali ke 001 setiap tahun baru; riwayat tahun lama tidak terhapus.</p></form>`}
+window.saveSet=e=>{e.preventDefault();guard(async()=>{await setDoc(doc(col('settings'),'main'),{...Object.fromEntries(new FormData(e.target)),businessId:B,updatedAt:serverTimestamp(),updatedBy:U.email},{merge:true});await loadAll();toast('Pengaturan disimpan');go('set')})};
+</script></body></html>

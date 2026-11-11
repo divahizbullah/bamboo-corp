@@ -3,7 +3,7 @@
 <title>Business Management – GSB & BDP ART</title>
 <style>
 :root{--p:#0f2747;--a:#c9a227;--bg:#f4f5f8;--t:#1b2230;--m:#667085;--b:#e1e4ea}
-body.BDP{--p:#3b1458;--a:#f26a1b}
+body.BDP{--p:#3b1458;--a:#f26a1b}body.DM{--p:#10332b;--a:#2fa37a}
 *{box-sizing:border-box}body{margin:0;font:15px/1.45 "Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--t)}
 h1,h2,h3{margin:0}button,input,select,textarea{font:inherit}
 input,select,textarea{width:100%;padding:8px 10px;border:1px solid var(--b);border-radius:8px;background:#fff}
@@ -13,6 +13,7 @@ button.pr{background:var(--p);color:#fff;border-color:var(--p)}button.ac{backgro
 .hide{display:none!important}
 #pick{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(120deg,#0f2747 50%,#3b1458 50%)}
 #pick .in{max-width:900px;width:100%}#pick h1{color:#fff;text-align:center;margin-bottom:20px;font-size:26px}
+#pick .dm{flex-direction:row;align-items:center;gap:20px;margin-bottom:18px;border-top:6px solid #2fa37a;flex-wrap:wrap}#pick .dm .tx{flex:1;min-width:220px}#pick .dm h2{margin:0}#pick .dm p{margin:6px 0 0}#pick .dm button{white-space:nowrap}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
 .bc{background:#fff;border-radius:16px;padding:26px;display:flex;flex-direction:column;gap:8px}
 .bc .lg{width:64px;height:64px;border-radius:14px;display:grid;place-items:center;font-weight:800;font-size:20px;color:#fff}.bc small{color:var(--m)}
@@ -45,7 +46,8 @@ dialog{border:0;border-radius:14px;padding:18px;width:min(820px,96vw);max-height
 @media(max-width:800px){#app{grid-template-columns:1fr}#side{flex-direction:row;flex-wrap:wrap}#side .br{width:100%}.r2{grid-template-columns:1fr}.it{grid-template-columns:1fr 1fr}}
 @media print{body>*:not(#doc){display:none!important}#doc{position:static;background:none;padding:0}#doc .tb{display:none}.paper{margin:0;padding:12mm;width:auto}@page{size:A4;margin:0}tr{break-inside:avoid}thead{display:table-header-group}}
 </style></head><body>
-<div id="pick"><div class="in"><h1>Business Management</h1><div class="cards">
+<div id="pick"><div class="in"><div class="bc dm"><div class="lg" style="background:#10332b">DM</div><div class="tx"><h2>DM CORP</h2><small>Administrator · Pusat Kontrol</small><p>Kelola akun login, atur akses GSB &amp; BDP, dan lihat laporan gabungan kedua usaha.</p></div><button class="pr" style="background:#10332b" onclick="pickB('DM')">MASUK ADMINISTRATOR</button></div>
+<div class="cards">
 <div class="bc"><div class="lg" style="background:#0f2747">GSB</div><h2>CV. GOGO SUKSES BERSAMA</h2><small>Engineering & Technical Services</small><p>Solusi CCTV, AC, instalasi, maintenance, dan pengadaan teknik.</p><button class="pr" onclick="pickB('GSB')">MASUK DASHBOARD</button></div>
 <div class="bc"><div class="lg" style="background:#3b1458">BDP</div><h2>BAMBOO DIGITAL PRINTING</h2><small>BDP ART · Digital Printing & Creative</small><p>Solusi percetakan, desain grafis, advertising, dan kebutuhan cetak.</p><button class="pr" style="background:#3b1458" onclick="pickB('BDP')">MASUK DASHBOARD</button></div>
 </div></div></div>
@@ -58,14 +60,14 @@ import{getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,updateP
 import{getFirestore,collection,doc,getDoc,getDocs,setDoc,addDoc,deleteDoc,runTransaction,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 /* ISI DENGAN FIREBASE WEB CONFIG ANDA (Project settings > Your apps > Web app) */
 const CFG={apiKey:"AIzaSyC79IURaZhlsP8FX8SrcCc7o8eDPny6ba4",authDomain:"bamboocorp-1c074.firebaseapp.com",projectId:"bamboocorp-1c074",storageBucket:"bamboocorp-1c074.firebasestorage.app",messagingSenderId:"918778586590",appId:"1:918778586590:web:2d91c1a648d0df0258a94f"};
-const NAMA={GSB:'CV. GOGO SUKSES BERSAMA',BDP:'BAMBOO DIGITAL PRINTING (BDP ART)'};
+const NAMA={GSB:'CV. GOGO SUKSES BERSAMA',BDP:'BAMBOO DIGITAL PRINTING (BDP ART)',DM:'DM CORP (Administrator)'};
 let B=null,U=null,ST={},CU=[],app,auth,db;
 const $=s=>document.querySelector(s),E=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),
 R=n=>'Rp '+Math.round(+n||0).toLocaleString('id-ID'),D=d=>d?new Date(d+'T00:00:00').toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}):'-',
 td=()=>new Date().toISOString().slice(0,10);
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.remove('hide');setTimeout(()=>t.classList.add('hide'),3000)}
-const col=n=>collection(db,'businesses',B,n);
-async function list(n){const s=await getDocs(col(n));return s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.tanggal||'')>(a.tanggal||'')?1:-1)}
+const col=(n,b=B)=>collection(db,'businesses',b,n);
+async function list(n,b=B){const s=await getDocs(col(n,b));return s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.tanggal||'')>(a.tanggal||'')?1:-1)}
 async function save(n,id,o){const now=serverTimestamp(),d={...o,businessId:B,updatedAt:now};if(id){await setDoc(doc(col(n),id),d,{merge:true});return id}d.createdAt=now;d.createdBy=U.email;return(await addDoc(col(n),d)).id}
 const guard=async f=>{try{await f()}catch(e){console.error(e);toast('Gagal: '+(e.code||e.message))}};
 try{app=initializeApp(CFG);auth=getAuth(app);db=getFirestore(app)}catch(e){console.error(e)}
@@ -75,28 +77,43 @@ window.doLogin=async e=>{e.preventDefault();$('#le').textContent='';if(!CFG.apiK
 try{const un=$('#em').value.trim().toLowerCase();window.DEFPW=$('#pw').value==='admin123';const cr=await signInWithEmailAndPassword(auth,un.includes('@')?un:un+'@bamboocorp.app',$('#pw').value);await enter(cr.user)}catch(er){$('#le').textContent='Username atau kata sandi salah ('+er.code+')'}}
 let ENT=0;const enter=async u=>{if(!u||!B||ENT||U)return;ENT=1;
 try{const p=await getDoc(doc(db,'users',u.uid)),d=p.exists()?p.data():null;
-if(!d||!(d.businesses||[]).includes(B)){await signOut(auth);$('#le').textContent='Akun ini tidak punya akses ke '+B+'.';return}
-U={uid:u.uid,email:u.email,role:d.role||'staff'};await loadAll();$('#login').classList.add('hide');$('#app').classList.remove('hide');go('dash');if(window.DEFPW)toast('Password masih bawaan. Segera ganti di menu Pengguna & Akun.')}
+if(!d||(B=='DM'?d.role!='admin':!(d.businesses||[]).includes(B))){await signOut(auth);$('#le').textContent='Akun ini tidak punya akses ke '+(B=='DM'?'DM CORP (khusus administrator)':B)+'.';return}
+U={uid:u.uid,email:u.email,role:d.role||'staff'};if(B!='DM')await loadAll();else{ST={};CU=[]}$('#login').classList.add('hide');$('#app').classList.remove('hide');go(B=='DM'?'dmd':'dash');if(window.DEFPW)toast('Password masih bawaan. Segera ganti password Anda.')}
 catch(er){$('#le').textContent='Gagal memuat akses: '+(er.code||er.message)}finally{ENT=0}};
 if(auth)onAuthStateChanged(auth,u=>{if(!u||!B){U=null;return}enter(u)});
 
 const mail=u=>u.includes('@')?u:u+'@bamboocorp.app';
+const pwForm=()=>`<form class="card" onsubmit="chPw(event)"><h3>Ganti password saya</h3><div class="r2">${F('old','Password lama','','password','required')}${F('nw','Password baru (min. 6 karakter)','','password','required minlength=6')}</div><p><button class="pr">Ganti password</button></p></form>`;
+async function pwView(){return`<div class="hd"><h2>Ganti Password</h2></div>`+pwForm()}
+const BZ=['GSB','BDP'],bxs=(n,ch=BZ,x='')=>BZ.map(b=>`<label style="display:inline-block;margin-right:12px"><input type="checkbox" name="${n}" value="${b}" ${ch.includes(b)?'checked':''} ${x} style="width:auto"> ${b}</label>`).join('');
 async function usrView(){const sn=await getDocs(collection(db,'users')),us=sn.docs.map(d=>({id:d.id,...d.data()}));
-const bx=(n,ch=['GSB','BDP'])=>['GSB','BDP'].map(b=>`<label style="display:inline-block;margin-right:12px"><input type="checkbox" name="${n}" value="${b}" ${ch.includes(b)?'checked':''} style="width:auto"> ${b}</label>`).join('');
-return`<div class="hd"><h2>Pengguna & Akun</h2></div>
-<form class="card" onsubmit="chPw(event)"><h3>Ganti password saya</h3><div class="r2">${F('old','Password lama','','password','required')}${F('nw','Password baru (min. 6 karakter)','','password','required minlength=6')}</div><p><button class="pr">Ganti password</button></p></form>
-<form class="card" onsubmit="addUsr(event)"><h3>Tambah pengguna</h3><div class="r2">${F('un','Username','','text','required pattern="[a-z0-9._-]{3,}" autocapitalize="none"')}${F('pw','Password (min. 6 karakter)','','password','required minlength=6')}</div><label>Peran</label><select name="role"><option value="staff">staff</option><option value="admin">admin</option></select><p>Akses usaha: ${bx('biz')}</p><p><button class="pr">Tambah</button></p></form>
-<div class="card"><h3>Daftar pengguna</h3><table><thead><tr><th>Username</th><th>Peran</th><th>Akses</th><th></th></tr></thead><tbody>${us.map(u=>`<tr><td>${E(u.username||u.id)}</td><td>${E(u.role)}</td><td>${E((u.businesses||[]).join(', '))}</td><td>${u.id==U.uid?'(Anda)':`<button onclick="delUsr('${u.id}')">Cabut akses</button>`}</td></tr>`).join('')}</tbody></table><p style="color:var(--m);font-size:13px">Password pengguna lain tidak bisa dilihat atau diubah dari sini. Jika lupa, cabut akses lalu tambahkan lagi dengan username berbeda, atau hapus akunnya di Firebase Console.</p></div>`}
+return`<div class="hd"><h2>Pengguna & Akses</h2></div>`+pwForm()+`
+<form class="card" onsubmit="addUsr(event)"><h3>Tambah pengguna</h3><div class="r2">${F('un','Username','','text','required pattern="[a-z0-9._-]{3,}" autocapitalize="none"')}${F('pw','Password (min. 6 karakter)','','password','required minlength=6')}</div><label>Peran</label><select name="role"><option value="staff">staff (hanya usaha yang dicentang)</option><option value="admin">admin (semua usaha + DM CORP)</option></select><p>Akses usaha: ${bxs('biz',[])}</p><p><button class="pr">Tambah</button></p></form>
+<div class="card sc"><h3>Atur akses pengguna</h3><table><thead><tr><th>Username</th><th>Peran</th><th>Akses usaha</th><th></th></tr></thead><tbody>${us.map(u=>`<tr data-u="${u.id}"><td>${E(u.username||u.id)}</td><td><select data-r>${['staff','admin'].map(r=>`<option ${u.role==r?'selected':''}>${r}</option>`).join('')}</select></td><td>${bxs('b_'+u.id,u.businesses||[])}</td><td><button class="pr" onclick="saveAcc('${u.id}')">Simpan</button> ${u.id==U.uid?'(Anda)':`<button class="dg" onclick="delUsr('${u.id}')">Cabut</button>`}</td></tr>`).join('')}</tbody></table><p style="color:var(--m);font-size:13px">Admin otomatis bisa masuk ke GSB, BDP, dan DM CORP. Staff hanya bisa masuk ke usaha yang dicentang. Password pengguna lain tidak bisa dilihat atau diubah dari sini; jika lupa, cabut akses lalu buat ulang dengan username lain.</p></div>`}
+window.saveAcc=id=>{const tr=document.querySelector(`tr[data-u="${id}"]`),r=tr.querySelector('[data-r]').value,biz=[...tr.querySelectorAll('input[type=checkbox]:checked')].map(x=>x.value);
+if(id==U.uid&&r!='admin')return toast('Anda tidak bisa menurunkan peran akun sendiri');
+guard(async()=>{await setDoc(doc(db,'users',id),{role:r,businesses:biz},{merge:true});toast('Akses disimpan');go('usr')})};
+const sumB=async b=>{const q=await list('quotations',b),v=await list('invoices',b),tb=v.filter(i=>!/Dibatalkan|Draft/.test(i.status||'')),tot=tb.reduce((a,i)=>a+i.total,0),pd=tb.reduce((a,i)=>a+paid(i),0),bln={};tb.forEach(i=>{const k=(i.tanggal||'').slice(0,7);bln[k]=(bln[k]||0)+paid(i)});return{q:q.length,qv:q.reduce((a,i)=>a+i.total,0),v:v.length,tot,pd,pu:tot-pd,jt:v.filter(i=>stInv(i)=='Jatuh tempo').length,bln}};
+async function dmDash(){const r={};for(const b of BZ)r[b]=await sumB(b);const g=BZ.reduce((a,b)=>{for(const k of['q','qv','v','tot','pd','pu','jt'])a[k]=(a[k]||0)+r[b][k];return a},{}),
+row=(n,x)=>`<tr><td><b>${n}</b></td><td>${x.q}</td><td>${R(x.qv)}</td><td>${x.v}</td><td>${R(x.tot)}</td><td>${R(x.pd)}</td><td>${R(x.pu)}</td><td>${x.jt}</td></tr>`,
+ks=[...new Set(BZ.flatMap(b=>Object.keys(r[b].bln)))].sort().slice(-6);
+return`<div class="hd"><h2>Ringkasan Gabungan GSB + BDP</h2></div><div class="grid"><div class="card st"><b>${R(g.tot)}</b><span>Total tagihan</span></div><div class="card st"><b>${R(g.pd)}</b><span>Pembayaran diterima</span></div><div class="card st"><b>${R(g.pu)}</b><span>Piutang</span></div><div class="card st"><b>${g.jt}</b><span>Invoice jatuh tempo</span></div></div>
+<div class="card sc"><h3>Perbandingan usaha</h3><table><tr><th>Usaha</th><th>Penawaran</th><th>Nilai penawaran</th><th>Invoice</th><th>Ditagih</th><th>Diterima</th><th>Piutang</th><th>Jatuh tempo</th></tr>${row('GSB',r.GSB)}${row('BDP',r.BDP)}${row('Gabungan',g)}</table></div>
+<div class="card sc"><h3>Pembayaran diterima per bulan</h3><table><tr><th>Bulan</th><th>GSB</th><th>BDP</th><th>Gabungan</th></tr>${ks.map(k=>`<tr><td>${k}</td><td>${R(r.GSB.bln[k]||0)}</td><td>${R(r.BDP.bln[k]||0)}</td><td>${R((r.GSB.bln[k]||0)+(r.BDP.bln[k]||0))}</td></tr>`).join('')||'<tr><td>Belum ada pembayaran</td></tr>'}</table></div>`}
+window.LB=window.LB||'GSB';
+async function dmLap(){const o=B;B=window.LB;let h;try{h=await lap()}finally{B=o}
+return`<div class="card"><label>Lihat laporan usaha</label><select onchange="LB=this.value;go('dml')">${BZ.map(b=>`<option value="${b}" ${b==LB?'selected':''}>${NAMA[b]}</option>`).join('')}</select></div>`+h}
 window.chPw=e=>{e.preventDefault();const f=new FormData(e.target);guard(async()=>{const u=auth.currentUser;await reauthenticateWithCredential(u,EmailAuthProvider.credential(u.email,f.get('old')));await updatePassword(u,f.get('nw'));toast('Password diganti');go('usr')})};
-window.addUsr=e=>{e.preventDefault();const f=new FormData(e.target),un=f.get('un').trim().toLowerCase(),biz=f.getAll('biz');if(!biz.length)return toast('Pilih minimal satu usaha');
+window.addUsr=e=>{e.preventDefault();const f=new FormData(e.target),un=f.get('un').trim().toLowerCase(),biz=f.getAll('biz');if(!biz.length&&f.get('role')!='admin')return toast('Pilih minimal satu usaha');
 guard(async()=>{const a2=getAuth(initializeApp(CFG,'sec'+Date.now())),c=await createUserWithEmailAndPassword(a2,mail(un),f.get('pw'));await signOut(a2);await setDoc(doc(db,'users',c.user.uid),{username:un,role:f.get('role'),businesses:biz});toast('Pengguna ditambahkan');go('usr')})};
 window.delUsr=id=>{if(!confirm('Cabut akses pengguna ini?'))return;guard(async()=>{await deleteDoc(doc(db,'users',id));toast('Akses dicabut');go('usr')})};
 window.logout=async()=>{await signOut(auth);location.reload()};
 async function loadAll(){const s=await getDoc(doc(col('settings'),'main'));ST=s.exists()?s.data():{};CU=await list('customers')}
+const MENU_DM=[['dmd','Ringkasan Gabungan'],['dml','Laporan per Usaha'],['usr','Pengguna & Akses']];
 const MENU=[['dash','Dashboard'],['cust','Data Pelanggan'],['quo','Daftar Penawaran'],['inv','Daftar Invoice'],['lap','Laporan'],['set','Pengaturan Usaha']];
-window.go=async v=>{$('#side').innerHTML=`<div class="br">${ST.logo?`<img src="${E(ST.logo)}" alt="">`:''}<span>${E(ST.nama||NAMA[B])}</span></div>`+MENU.concat(U.role=='admin'?[['usr','Pengguna & Akun']]:[]).map(([k,l])=>`<button class="${k==v?'on':''}" onclick="go('${k}')">${l}</button>`).join('')+`<button onclick="logout()">Logout</button>`;
+window.go=async v=>{$('#side').innerHTML=`<div class="br">${ST.logo?`<img src="${E(ST.logo)}" alt="">`:''}<span>${E(ST.nama||NAMA[B])}</span></div>`+(B=='DM'?MENU_DM:MENU.concat([['pw','Ganti Password']])).map(([k,l])=>`<button class="${k==v?'on':''}" onclick="go('${k}')">${l}</button>`).join('')+`<button onclick="logout()">Logout</button>`;
 $('#main').innerHTML='<p>Memuat…</p>';await guard(async()=>{$('#main').innerHTML=await VIEW[v]()})}
-const VIEW={dash,cust,quo:()=>docList('quotations'),inv:()=>docList('invoices'),lap,set:setView,usr:usrView};
+const VIEW={dash,cust,quo:()=>docList('quotations'),inv:()=>docList('invoices'),lap,set:setView,usr:usrView,pw:pwView,dmd:dmDash,dml:dmLap};
 const paid=i=>(i.payments||[]).reduce((a,p)=>a+(+p.jumlah||0),0);
 function stInv(i){if(i.status=='Dibatalkan'||i.status=='Draft')return i.status;const p=paid(i);if(i.total>0&&p>=i.total-0.5)return'Lunas';if(i.due&&i.due<td())return'Jatuh tempo';return p>0?'Dibayar sebagian':'Belum dibayar'}
 const cls=s=>/Lunas|Disetujui/.test(s)?'ok':/tempo|Ditolak|Batal/.test(s)?'x':/sebagian|Terkirim|Belum/.test(s)?'w':'';

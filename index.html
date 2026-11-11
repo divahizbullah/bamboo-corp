@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Business Management – GSB & BDP ART</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Barlow:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--p:#0f2747;--a:#c9a227;--bg:#f4f5f8;--t:#1b2230;--m:#667085;--b:#e1e4ea}
 body.BDP{--p:#3b1458;--a:#f26a1b}body.DM{--p:#10332b;--a:#2fa37a}
@@ -101,9 +101,81 @@ dialog{border:0;border-radius:14px;padding:18px;width:min(1000px,96vw);max-heigh
 .bdpq .qbd{position:absolute;left:0;right:0;bottom:0;height:14mm;background:#ee1c25;z-index:1}
 .it.bi input[readonly]{background:#f3f4f7}.uk{min-width:0}
 .ak{width:auto;min-width:130px}
-.sgi{position:relative;width:62mm;max-width:100%;height:26mm;margin:1mm auto}
-.paper .sgi img.st{position:absolute;left:50%;top:0;transform:translateX(-50%);height:26mm;max-width:62mm;object-fit:contain;margin:0;display:block}
-.paper .sgi img.sc{position:absolute;left:50%;top:1mm;transform:translateX(-90%);height:24mm;max-width:32mm;object-fit:contain;margin:0;display:block;opacity:.9;mix-blend-mode:multiply}
+.sgi{position:relative;width:62mm;max-width:100%;height:30mm;margin:1mm auto}
+.paper .sgi img.st{position:absolute;left:50%;top:0;transform:translateX(-50%);height:28mm;max-width:62mm;object-fit:contain;margin:0;display:block}
+.paper .sgi img.sc{position:absolute;left:50%;top:-8mm;transform:translateX(-86%);height:46mm;max-width:46mm;object-fit:contain;margin:0;display:block;opacity:.92;mix-blend-mode:multiply}
+
+.gsbq .gtl{text-align:center;font:700 22pt "Times New Roman",Times,serif;margin:6mm 0 3mm;color:#000}
+.gsbq table.git td.rt{text-align:right}.gsbq table.git{margin-top:0}
+.gsbq .gml{display:flex;font:700 10.5pt/1.7 Arial,Helvetica,sans-serif}.gsbq .gml span{width:26mm;flex:none}
+.gsbq .gcat{border:1px solid #000;border-top:0;padding:2mm 4mm 4mm;font:700 10pt/1.5 Arial,Helvetica,sans-serif}.gsbq .gcat ol{margin:1mm 0 0;padding-left:9mm}
+/* ===== tema, beda mode & animasi ===== */
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:none}}
+@keyframes grow{from{transform:scaleX(0)}}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-20px) rotate(8deg)}}
+@keyframes shine{from{transform:translateX(-200px) skewX(-20deg)}to{transform:translateX(1400px) skewX(-20deg)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+button,select{transition:transform .15s,box-shadow .15s,background .2s,filter .2s}
+button:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.14)}button:active{transform:scale(.97)}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--a);outline-offset:0;border-color:var(--a)}
+button.ac{color:var(--ac,#111)}
+body.GSB{--p:#0b2a5c;--a:#1e88e5;--a2:#f6a54a;--ac:#fff;background-color:#e9eff8;background-image:linear-gradient(rgba(11,42,92,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(11,42,92,.05) 1px,transparent 1px);background-size:28px 28px}
+body.BDP{--p:#4a148c;--a:#ff6a1a;--a2:#c026d3;--ac:#fff;font-family:Poppins,"Segoe UI",system-ui,sans-serif;background-color:#fff5ec;background-image:radial-gradient(circle at 12% 18%,rgba(255,106,26,.16),transparent 38%),radial-gradient(circle at 88% 12%,rgba(192,38,211,.14),transparent 40%),radial-gradient(circle at 70% 90%,rgba(74,20,140,.10),transparent 42%);background-attachment:fixed}
+body.DM{--ac:#fff;background:#eaf4f0}
+#app>#main{background:none}
+#side{position:sticky;top:0;height:100vh;overflow:auto;align-self:start;gap:3px}
+body.GSB #side{border-top:6px solid var(--a2);background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(180deg,#071c42,#0b3a7e);background-size:22px 22px,22px 22px,100% 100%}
+body.BDP #side{border-radius:0 30px 30px 0;background-image:radial-gradient(circle at 0 0,rgba(255,255,255,.2),transparent 45%),radial-gradient(circle at 100% 100%,rgba(255,106,26,.65),transparent 58%),linear-gradient(170deg,#3b0f80,#8e24aa)}
+body.DM #side{background-image:linear-gradient(180deg,#0a2a22,#10463a)}
+#side button{transition:transform .15s,background .2s}#side button:hover:not(.on){transform:translateX(4px);box-shadow:none;background:rgba(255,255,255,.12)}
+body.GSB #side button{border-radius:3px}body.GSB #side button.on{background:rgba(255,255,255,.14);box-shadow:inset 4px 0 var(--a2)}
+body.BDP #side button{border-radius:99px}body.BDP #side button.on{background:#fff;color:var(--p);font-weight:600;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+#side .sb{margin-top:auto;display:flex;flex-direction:column;gap:6px;padding-top:12px;border-top:1px solid rgba(255,255,255,.22)}
+#side .sw{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.35);cursor:pointer}#side .sw option{color:#111}
+#side .sb button{border:1px solid rgba(255,255,255,.3)}#side .sb button:hover{background:rgba(220,38,38,.55)!important}
+body.GSB .card{border-radius:4px;border:1px solid #c9d6e8;border-top:3px solid var(--a);box-shadow:0 1px 2px rgba(11,42,92,.06)}
+body.BDP .card{border-radius:22px;border:0;box-shadow:0 10px 28px rgba(142,36,170,.13)}
+body.DM .card{border-radius:12px}
+.st{position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}.st:hover{transform:translateY(-4px);box-shadow:0 10px 22px rgba(0,0,0,.12)}
+body.GSB .st{border-left:6px solid var(--a2)}
+body.BDP .st::after{content:"";position:absolute;right:-18px;top:-18px;width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,var(--a),var(--a2));opacity:.2}
+body.GSB button,body.GSB input,body.GSB select,body.GSB textarea{border-radius:3px}
+body.BDP button{border-radius:99px}body.BDP input,body.BDP select,body.BDP textarea{border-radius:14px}
+body.GSB button.pr{background:linear-gradient(180deg,#1976d2,#0b2a5c);border-color:#0b2a5c}
+body.BDP button.pr{background:linear-gradient(135deg,#4a148c,#c026d3);border-color:transparent}
+#main h2,#main h3{letter-spacing:.2px}
+body.GSB #main h2,body.GSB #main h3{font-family:Barlow,"Segoe UI",sans-serif;text-transform:uppercase;letter-spacing:.8px}
+body.BDP #main h2,body.BDP #main h3{font-family:Poppins,sans-serif;font-weight:700}
+.mb{position:relative;overflow:hidden;display:flex;align-items:center;gap:16px;padding:16px 20px;margin-bottom:16px;color:#fff}
+.mb::after{content:"";position:absolute;top:0;bottom:0;left:0;width:60px;background:rgba(255,255,255,.18);animation:shine 5s ease-in-out infinite}
+.mb .mi{width:54px;height:54px;display:grid;place-items:center;font-size:28px;background:rgba(255,255,255,.18);flex:none;animation:bob 3s ease-in-out infinite}.mb .mi img{width:100%;height:100%;object-fit:contain;background:#fff;padding:3px}
+.mb .mx{flex:1;min-width:0}.mb b{display:block;font-size:18px}.mb small{opacity:.88}
+.mb .mt{font-weight:800;letter-spacing:2px;font-size:12px;padding:5px 12px;background:#fff;color:var(--p);position:relative;z-index:1}
+body.GSB .mb{background:linear-gradient(100deg,#071c42,#1565c0 70%,#1e88e5);clip-path:polygon(0 0,100% 0,100% 72%,97% 100%,0 100%);border-left:8px solid var(--a2)}
+body.GSB .mb .mi{border-radius:4px}body.GSB .mb .mt{border-radius:2px}
+body.BDP .mb{background:linear-gradient(100deg,#4a148c,#c026d3 55%,#ff6a1a);border-radius:30px;box-shadow:0 12px 30px rgba(192,38,211,.3)}
+body.BDP .mb .mi{border-radius:50%}body.BDP .mb .mt{border-radius:99px}
+body.DM .mb{background:linear-gradient(100deg,#0a2a22,#2fa37a);border-radius:12px}
+#main>*{animation:up .45s backwards}
+#main>*:nth-child(2){animation-delay:.06s}#main>*:nth-child(3){animation-delay:.12s}#main>*:nth-child(4){animation-delay:.18s}#main>*:nth-child(5){animation-delay:.24s}#main>*:nth-child(n+6){animation-delay:.3s}
+.grid>.card{animation:up .5s backwards}.grid>.card:nth-child(2){animation-delay:.05s}.grid>.card:nth-child(3){animation-delay:.1s}.grid>.card:nth-child(4){animation-delay:.15s}.grid>.card:nth-child(5){animation-delay:.2s}.grid>.card:nth-child(6){animation-delay:.25s}.grid>.card:nth-child(n+7){animation-delay:.3s}
+.bar{transform-origin:left;animation:grow .9s ease backwards}
+.sc tr:hover td{background:color-mix(in srgb,var(--a) 9%,#fff)}
+#toast{animation:up .3s backwards;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+dialog[open]{animation:pop .25s}dialog::backdrop{backdrop-filter:blur(3px)}
+#pick{background:linear-gradient(120deg,#0b2a5c 50%,#4a148c 50%);position:relative;overflow:hidden}
+#pick::before,#pick::after{content:"";position:absolute;border-radius:50%;animation:float 7s ease-in-out infinite;pointer-events:none}
+#pick::before{width:280px;height:280px;left:6%;top:10%;background:radial-gradient(circle,rgba(30,136,229,.6),transparent 70%)}
+#pick::after{width:320px;height:320px;right:8%;bottom:6%;background:radial-gradient(circle,rgba(255,106,26,.55),transparent 70%);animation-delay:-3.5s}
+#pick .in{position:relative;z-index:1}#pick h1{animation:up .6s backwards}
+.bc{transition:transform .25s,box-shadow .25s;animation:up .6s backwards}.bc:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(0,0,0,.3)}.bc .lg{animation:bob 3s ease-in-out infinite}
+.cards .bc:nth-child(1){border-top:6px solid #1e88e5;border-radius:6px}.cards .bc:nth-child(2){border-top:6px solid #ff6a1a;border-radius:30px;animation-delay:.1s}
+.cards .bc:nth-child(2) .lg{background:linear-gradient(135deg,#4a148c,#ff6a1a)!important;border-radius:50%}.cards .bc:nth-child(1) .lg{border-radius:4px}
+body.GSB #login{background:linear-gradient(135deg,#071c42,#1565c0)}body.BDP #login{background:linear-gradient(135deg,#3b0f80,#c026d3 60%,#ff6a1a)}body.DM #login{background:linear-gradient(135deg,#0a2a22,#2fa37a)}
+#login form{animation:pop .4s backwards}body.BDP #login form{border-radius:30px}body.GSB #login form{border-radius:6px}
+@media(max-width:800px){#side{position:static;height:auto;border-radius:0!important}#side .sb{width:100%}.mb .mt{display:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 @media(max-width:800px){#app{grid-template-columns:1fr}#side{flex-direction:row;flex-wrap:wrap}#side .br{width:100%}.r2{grid-template-columns:1fr}.it{grid-template-columns:1fr 1fr}}
 @media print{body>*:not(#doc){display:none!important}.paper.gsbq{padding:10mm 14mm 0!important}#doc{position:static;background:none;padding:0}#doc .tb{display:none}.paper{margin:0;padding:12mm;width:auto}@page{size:A4;margin:0}tr{break-inside:avoid}thead{display:table-header-group}.paper.bdpi{padding:14mm 14mm 8mm!important}.paper.bdpq{padding:10mm 14mm 22mm!important}}
 </style></head><body>
@@ -182,7 +254,7 @@ guard(async()=>{const a2=getAuth(initializeApp(CFG,'sec'+Date.now())),c=await cr
 window.delUsr=id=>{if(!confirm('Cabut akses pengguna ini?'))return;guard(async()=>{await deleteDoc(doc(db,'users',id));toast('Akses dicabut');go('usr')})};
 
 const getCfg=async b=>{const x=await getDoc(doc(col('settings',b),'main'));return x.exists()?x.data():{}};
-const toB64=(file,max=500)=>new Promise((res,rej)=>{const img=new Image(),u=URL.createObjectURL(file);img.onload=()=>{const k=Math.min(1,max/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL('image/png').split(',')[1])};img.onerror=()=>rej(new Error('File bukan gambar'));img.src=u});
+const toB64=(file,max=900)=>new Promise((res,rej)=>{const img=new Image(),u=URL.createObjectURL(file);img.onload=()=>{const k=Math.min(1,max/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL('image/png').split(',')[1])};img.onerror=()=>rej(new Error('File bukan gambar'));img.src=u});
 async function driveUp(b,file,sub='Logo'){const c=await getCfg(b);if(!c.uploadUrl||!c.uploadFolder)throw new Error('Config upload '+b+' belum diisi (DM CORP > Config Upload & Logo)');const data=await toB64(file);
 const r=await fetch(c.uploadUrl,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({token:c.uploadToken||'',folder:c.uploadFolder,sub,name:b+'-'+sub.toLowerCase()+'-'+Date.now()+'.png',type:'image/png',data})}),j=await r.json();if(!j.ok)throw new Error(j.error||'Upload gagal');return j.url}
 window.upLogo=(b,inp,fld='logo',sub='Logo')=>{const f=inp.files[0];if(!f)return;guard(async()=>{toast('Mengunggah…');const url=await driveUp(b,f,sub);await setDoc(doc(col('settings',b),'main'),{[fld]:url,businessId:b,updatedAt:serverTimestamp(),updatedBy:U.email},{merge:true});if(b==B)ST[fld]=url;toast(fld=='logo'?'Logo diganti':'Tanda tangan diganti');go(B=='DM'?(b=='DM'?'cfg':'s'+b):'dash')})};
@@ -204,8 +276,8 @@ const menuFor=()=>B=='DM'?MENU_DM:(B=='BDP'?[MENU[0],MENU[1],['prd','Daftar Bara
 const swTargets=()=>['DM','GSB','BDP'].filter(x=>x!=B&&(U.role=='admin'||(x!='DM'&&(U.businesses||[]).includes(x))));
 window.swB=async b=>{if(!swTargets().includes(b))return toast('Akun ini tidak punya akses ke '+b);B=b;document.body.className=b;ST={};CU=[];await guard(async()=>{await loadAll();go(b=='DM'?'dmd':'dash')})};
 const MENU=[['dash','Dashboard'],['cust','Data Pelanggan'],['quo','Daftar Penawaran'],['inv','Daftar Invoice'],['mod','Modal Per Projek'],['lap','Laporan']];
-window.go=async v=>{window.CV=v;$('#side').innerHTML=`<div class="br">${ST.logo?`<img src="${E(ST.logo)}" alt="">`:''}<span>${E(ST.nama||NAMA[B])}</span></div>`+menuFor().map(([k,l])=>`<button class="${k==v?'on':''}" onclick="go('${k}')">${l}</button>`).join('')+swTargets().map(x=>`<button onclick="swB('${x}')" style="opacity:.85">⇄ Buka ${x=='DM'?'DM CORP':x}</button>`).join('')+`<button onclick="logout()">Logout</button>`;try{localStorage.setItem('ctx',JSON.stringify({b:B,v}))}catch(e){}
-$('#main').innerHTML='<p>Memuat…</p>';await guard(async()=>{$('#main').innerHTML=await VIEW[v]()})}
+window.go=async v=>{window.CV=v;$('#side').innerHTML=`<div class="br">${ST.logo?`<img src="${E(ST.logo)}" alt="">`:''}<span>${E(ST.nama||NAMA[B])}</span></div>`+menuFor().map(([k,l])=>`<button class="${k==v?'on':''}" onclick="go('${k}')">${IC[k]||'•'} ${l}</button>`).join('')+sbBottom();try{localStorage.setItem('ctx',JSON.stringify({b:B,v}))}catch(e){}
+$('#main').innerHTML='<p>Memuat…</p>';await guard(async()=>{$('#main').innerHTML=banner()+await VIEW[v]();countUp()})}
 const VIEW={dash,cust,quo:()=>docList('quotations'),inv:()=>docList('invoices'),lap,set:()=>setView(),sGSB:()=>setView('GSB'),sBDP:()=>setView('BDP'),usr:usrView,pw:pwView,dmd:dmDash,dml:dmLap,cfg:cfgView,prd:prdView,mod:modView};
 const paid=i=>(i.payments||[]).reduce((a,p)=>a+(+p.jumlah||0),0);
 function stInv(i){if(i.status=='Dibatalkan'||i.status=='Draft')return i.status;const p=paid(i);if(i.total>0&&p>=i.total-0.5)return'Lunas';if(i.due&&i.due<td())return'Jatuh tempo';return p>0?'Dibayar sebagian':'Belum dibayar'}
@@ -213,7 +285,7 @@ const cls=s=>/Lunas|Disetujui/.test(s)?'ok':/tempo|Ditolak|Batal/.test(s)?'x':/s
 async function dash(){const q=await list('quotations'),v=await list('invoices'),tb=v.filter(i=>!/Dibatalkan|Draft/.test(i.status||'')),tot=tb.reduce((a,i)=>a+i.total,0),pd=tb.reduce((a,i)=>a+paid(i),0),bln={};
 v.forEach(i=>{const k=(i.tanggal||'').slice(0,7);bln[k]=(bln[k]||0)+paid(i)});const mx=Math.max(1,...Object.values(bln)),ks=Object.keys(bln).sort().slice(-6),c=(l,x)=>`<div class="card st"><b>${x}</b><span>${l}</span></div>`;
 return`<div class="hd"><h2>Dashboard ${E(ST.nama||NAMA[B])}</h2></div><div class="grid">${c('Total penawaran',q.length)}${c('Nilai penawaran',R(q.reduce((a,i)=>a+i.total,0)))}${c('Menunggu persetujuan',q.filter(i=>i.status=='Terkirim').length)}${c('Disetujui',q.filter(i=>i.status=='Disetujui').length)}${c('Total invoice',v.length)}${c('Total tagihan',R(tot))}${c('Pembayaran diterima',R(pd))}${c('Piutang',R(tot-pd))}${c('Invoice jatuh tempo',v.filter(i=>stInv(i)=='Jatuh tempo').length)}</div>
-<div class="card"><h3>Pembayaran diterima per bulan</h3>${ks.map(k=>`<div style="display:flex;gap:8px;align-items:center;margin:6px 0"><span style="width:70px;font-size:13px">${k}</span><div style="height:16px;border-radius:4px;background:var(--a);width:${Math.max(2,bln[k]/mx*60)}%"></div><span style="font-size:13px">${R(bln[k])}</span></div>`).join('')||'<p style="color:var(--m)">Belum ada pembayaran.</p>'}</div>
+<div class="card"><h3>Pembayaran diterima per bulan</h3>${ks.map(k=>`<div style="display:flex;gap:8px;align-items:center;margin:6px 0"><span style="width:70px;font-size:13px">${k}</span><div class="bar" style="height:16px;border-radius:4px;background:var(--a);width:${Math.max(2,bln[k]/mx*60)}%"></div><span style="font-size:13px">${R(bln[k])}</span></div>`).join('')||'<p style="color:var(--m)">Belum ada pembayaran.</p>'}</div>
 <div class="card sc"><h3>Transaksi terakhir</h3><table>${[...q.map(x=>({...x,j:'Penawaran'})),...v.map(x=>({...x,j:'Invoice'}))].sort((a,b)=>b.tanggal>a.tanggal?1:-1).slice(0,6).map(x=>`<tr><td>${D(x.tanggal)}</td><td>${x.j}</td><td>${E(x.nomor)}</td><td>${E(x.cname)}</td><td>${R(x.total)}</td></tr>`).join('')||'<tr><td>Belum ada transaksi</td></tr>'}</table></div>`}
 async function cust(){CU=await list('customers');const q=(window.CQ||'').toLowerCase(),l=CU.filter(c=>JSON.stringify(c).toLowerCase().includes(q));
 return`<div class="hd"><h2>Data Pelanggan</h2><button class="pr" onclick="cForm()">+ Tambah pelanggan</button></div><div class="card"><input placeholder="Cari pelanggan…" value="${E(window.CQ||'')}" onchange="CQ=this.value;go('cust')"></div><div class="card sc"><table><tr><th>Nama</th><th>PIC</th><th>Telepon</th><th>Alamat</th><th></th></tr>${l.map(c=>`<tr><td>${E(c.nama)}</td><td>${E(c.pic)}</td><td>${E(c.telp)}</td><td>${E(c.alamat)}</td><td><button onclick="cHist('${c.id}')">Riwayat</button> <button onclick="cForm('${c.id}')">Edit</button> <button class="dg" onclick="cDel('${c.id}')">Hapus</button></td></tr>`).join('')||'<tr><td colspan=5>Belum ada pelanggan.</td></tr>'}</table></div>`}
@@ -303,6 +375,13 @@ return`<div class="hd"><h2>Modal Per Projek</h2><button onclick="csvLaba()">Expo
 <div class="card sc"><table><tr><th>Proyek</th><th>Nilai proyek</th><th>Diterima</th><th>Sisa</th><th>Status</th><th>Modal</th><th>Laba bersih</th><th>Margin</th><th></th></tr>${L.map(p=>{const iv=p.iv[0];return`<tr><td><b>${E(p.x.nomor)}</b><br>${E(p.x.cname)}<br><small style="color:var(--m)">${E(p.x.perihal)} · ${D(p.x.tanggal)}</small></td><td>${R(p.nilai)}${p.iv.length&&Math.abs(p.T-p.x.total)>0.5?`<br><small style="color:var(--m)">penawaran ${R(p.x.total)}</small>`:''}</td><td>${R(p.pd)}</td><td>${R(Math.max(0,p.nilai-p.pd))}</td><td><span class="bg ${sc(p.st)}">${p.st}</span></td><td>${p.x.modal&&p.x.modal.length?R(p.md):'<span class="bg w">Belum diisi</span>'}</td><td><b>${R(p.lb)}</b></td><td>${p.nilai?Math.round(p.lb/p.nilai*100)+'%':'-'}</td><td><select class="ak" onchange="akDo(this)"><option value="">Aksi…</option><option value="mod|${p.x.id}">Input / ubah modal</option><option value="view|quotations|${p.x.id}">Lihat penawaran</option>${iv?`<option value="view|invoices|${iv.id}">Lihat invoice</option>${p.st!='Lunas'?`<option value="pay|${iv.id}">Catat pembayaran</option>`:''}`:`<option value="toinv|${p.x.id}">Buat invoice (DP)</option>`}</select></td></tr>`}).join('')||'<tr><td colspan=9>Belum ada penawaran berstatus Disetujui pada filter ini.</td></tr>'}</table></div>
 <p style="color:var(--m);font-size:13px">Alur: ubah status penawaran menjadi <b>Disetujui</b> → buat invoice (isi DP bila sudah masuk) → catat pelunasan → isi modal proyek. Laba bersih = nilai proyek − modal.</p>`}
 window.csvLaba=()=>{const c=['nomor,tanggal,pelanggan,proyek,nilai_proyek,diterima,modal,laba_bersih,status',...(window.LP||[]).map(p=>[p.x.nomor,p.x.tanggal,p.x.cname,p.x.perihal,p.nilai,p.pd,p.md,p.lb,p.st].map(z=>'"'+String(z??'').replace(/"/g,'""')+'"').join(','))].join('\n'),l=document.createElement('a');l.href=URL.createObjectURL(new Blob([c],{type:'text/csv'}));l.download=B+'-laba-'+td()+'.csv';l.click()};
+
+const IC={dash:'📊',cust:'👥',quo:'📝',inv:'🧾',mod:'💰',lap:'📈',prd:'📦',pw:'🔑',dmd:'🏢',dml:'📑',sGSB:'🛠',sBDP:'🎨',cfg:'☁️',usr:'🛡'},
+EM={GSB:'🛠',BDP:'🎨',DM:'🏢'},TG={GSB:'Engineering & Technical Services · CCTV · AC · Instalasi',BDP:'Digital Printing & Creative · Akrilik · Cetak · Advertising',DM:'Administrator · Pusat Kontrol GSB & BDP'},
+SWN={GSB:'GSB – Gogo Sukses Bersama',BDP:'BDP – Bamboo Digital Printing',DM:'DM CORP (Administrator)'};
+const banner=()=>`<div class="mb"><div class="mi">${ST.logo?`<img src="${E(ST.logo)}" alt="">`:EM[B]}</div><div class="mx"><b>${E(ST.nama||NAMA[B])}</b><small>${TG[B]||''}</small></div><span class="mt">${B=='DM'?'ADMIN':'MODE '+B}</span></div>`;
+const sbBottom=()=>{const t=swTargets();return`<div class="sb">${t.length?`<select class="sw" onchange="if(this.value)swB(this.value)"><option value="">⇄ Pindah akses…</option>${t.map(x=>`<option value="${x}">${SWN[x]}</option>`).join('')}</select>`:''}<button onclick="logout()">⎋ Logout</button></div>`};
+function countUp(){if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;document.querySelectorAll('#main .st b').forEach(el=>{const m=el.textContent.trim().match(/^(Rp\s)?(-?)([\d.]+)$/);if(!m)return;const to=+m[3].replace(/\./g,'');if(!to)return;const t0=performance.now();(function f(n){const k=Math.min(1,(n-t0)/700),e=1-Math.pow(1-k,3);el.textContent=(m[1]||'')+m[2]+Math.round(to*e).toLocaleString('id-ID');if(k<1)requestAnimationFrame(f)})(t0)})}
 const LN=t=>String(t||'').split('\n').map(z=>z.trim()).filter(Boolean);
 const parseTb=t=>LN(t).map(z=>z.split('=')).filter(z=>z.length>1).map(z=>({u:z[0].trim(),h:+z[1].replace(/\D/g,'')||0}));
 const MODE={m2:'Per m² (isi panjang × lebar)',tabel:'Tabel ukuran → harga',tetap:'Harga tetap per satuan'};
@@ -331,6 +410,23 @@ window.rowP=el=>rowCalc(el.closest('[data-i]'));
 window.pickP=sel=>{const row=sel.closest('[data-i]'),p=PR.find(x=>x.id==sel.value),q=k=>row.querySelector(`[name=${k}]`);
 row.querySelector('.uk').innerHTML=ukCell(p);const n=q('n'),b=q('b'),c=q('c'),h=q('h');n.classList.toggle('hide',!!p);b.readOnly=c.readOnly=h.readOnly=!!p;
 if(p){n.value=p.nama;b.value=p.bahan||'';c.value=p.finishing||'';q('u').value=p.satuan||'pcs';rowCalc(row)}else{n.value='';b.value='';c.value='';h.value='';calc()}};
+function gsbInv(x,s,pd){const G=sg(x,s),nm=s.nama||NAMA.GSB,ln=t=>String(t||'').split('\n').map(z=>z.trim()).filter(Boolean),sisa=x.total-pd,
+al=ln(s.alamat).map(z=>`<div>${E(z)}</div>`).join(''),ko=ln(s.kontak).map(E).join(' &nbsp;|&nbsp; '),
+rows=x.items.map((r,i)=>`<tr><td>${i+1}</td><td class="d">${E(r.n).toUpperCase()}${r.a?`<div class="gsd">${E(r.a)}</div>`:''}</td><td>${E(r.q)}</td><td>${E(r.u).toUpperCase()}</td><td class="rt">${N(r.h)}</td><td class="rt">${N(r.q*r.h)}</td></tr>`).join(''),
+tr=(l,v)=>`<tr class="tt"><td colspan="5" class="rt">${l}</td><td class="rt">${v}</td></tr>`,
+pre=(x.disc?tr('DISKON','- '+N(x.disc)):'')+(x.ppn?tr('PPN '+x.ppn+'%',N((x.sub-x.disc)*x.ppn/100)):''),
+post=pd>0?tr('DIBAYAR (DP / PEMBAYARAN)','- '+N(pd))+tr('SISA TAGIHAN',N(Math.max(0,sisa))):'',
+nt=ln(x.tnc).map(z=>z.replace(/^\d+[.)]\s*/,''));if(!nt.length&&s.bank)nt.push('Transfer ke '+s.bank+' No. Rek. '+(s.rek||'')+(s.pemilik?' a.n. '+s.pemilik:''));
+const ic=p=>`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${p}</svg>`;
+return`<div class="paper gsbq B-GSB"><div class="gtab"></div>${s.logo?`<img class="gwm" src="${E(s.logo)}" alt="">`:''}<div class="gin">
+<div class="ghd">${s.logo?`<img src="${E(s.logo)}" alt="">`:''}<div class="gnm"><b>${E(nm)}</b>${s.tagline?`<span>${E(s.tagline)}</span>`:''}</div></div>
+<div class="gal">${al}${ko?`<div>${ko}</div>`:''}</div><div class="gln"></div><div class="gln2"></div>
+<div class="gtl">INVOICE</div>
+<table class="git"><tbody><tr><td colspan="4" class="d" style="padding:4mm"><div class="gml"><span>Kepada Yth</span>: ${E(x.cname)}</div><div class="gml"><span>Alamat</span>: ${E(x.caddr)}</div><div class="gml"><span>Hal</span>: ${E(x.perihal)}</div></td><td colspan="2" style="font-size:13pt;line-height:1.5">No. Tagihan :<br>${E(x.nomor)}</td></tr>
+<tr><th style="width:6%">NO</th><th>DESKRIPSI</th><th colspan="2" style="width:15%">QTY</th><th style="width:16%">HARGA<br>SATUAN (Rp)</th><th style="width:16%">TOTAL<br>(Rp)</th></tr>${rows}${pre}${tr('GRAND TOTAL',N(x.total))}${post}</tbody></table>
+<div class="gcat"><b>Catatan :</b>${nt.length?`<ol>${nt.map(z=>`<li>${E(z)}</li>`).join('')}</ol>`:''}${x.cat?`<div style="font-weight:400;margin-top:2mm">${E(x.cat)}</div>`:''}</div>
+<div class="gsg"><div>${s.kota?E(s.kota)+', ':''}${D(x.tanggal)}</div><div>${E(G.jab)}</div>${sgImg(G)}<div>${E(G.nama)}</div></div></div>
+<div class="gft">${s.web?`<span>${ic('<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/>')}${E(s.web)}</span>`:''}${s.email?`<span>${ic('<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 6l10 7 10-7"/>')}${E(s.email)}</span>`:''}<i></i></div></div>`}
 function bdpInv(x,s,pd){const G=sg(x,s),sisa=x.total-pd,al=LN(s.alamat).map(E).join('<br>'),
 rows=x.items.map((r,i)=>`<tr><td class="c">${i+1}</td><td>${E(r.n)}</td><td class="r">${E(r.q)}</td><td class="r">${R(r.h)}</td><td class="r">${R(r.q*r.h)}</td></tr>`).join(''),
 ref=x.refTgl?'Penawaran '+D(x.refTgl):(x.ref||''),
@@ -358,7 +454,7 @@ window.view_=async(n,id)=>{const x=(await getDoc(doc(col(n),id))).data(),inv=n==
 rows=x.items.map((r,i)=>`<tr><td>${i+1}</td><td>${E(r.n)}${bdp?'':'<br><small>'+E(r.a)+'</small>'}</td>${bdp?`<td>${E(r.a)}</td><td>${E(r.b)}</td><td>${E(r.c)}</td>`:''}<td>${r.q} ${E(r.u)}</td><td align=right>${R(r.h)}</td><td align=right>${R(r.q*r.h)}</td></tr>`).join(''),
 head=`<th>No</th><th>${bdp?'Produk':'Uraian pekerjaan'}</th>${bdp?'<th>Ukuran</th><th>Bahan</th><th>Finishing</th>':''}<th>Qty</th><th>Harga</th><th>Jumlah</th>`;
 $('#doc').innerHTML=`<div class="tb"><button onclick="$('#doc').classList.add('hide')">Tutup</button><button class="ac" onclick="window.print()">Cetak / Simpan PDF</button><button onclick="wa('${E(x.nomor)}','${E(x.cname)}',${x.total})">Bagikan WhatsApp</button></div>
-${bdp?(inv?bdpInv(x,s,pd):bdpQuo(x,s)):gsb?gsbQuo(x,s):`<div class="paper ${B}"><div class="kop">${s.logo?`<img src="${E(s.logo)}" alt="">`:''}<div><b style="font-size:15pt">${E(s.nama||NAMA[B])}</b><br><small>${E(s.alamat)}<br>${[s.telp&&'Telp: '+s.telp,s.email,s.web].filter(Boolean).map(E).join(' · ')}${s.npwp?'<br>NPWP: '+E(s.npwp):''}</small></div></div>
+${bdp?(inv?bdpInv(x,s,pd):bdpQuo(x,s)):B=='GSB'?(inv?gsbInv(x,s,pd):gsbQuo(x,s)):`<div class="paper ${B}"><div class="kop">${s.logo?`<img src="${E(s.logo)}" alt="">`:''}<div><b style="font-size:15pt">${E(s.nama||NAMA[B])}</b><br><small>${E(s.alamat)}<br>${[s.telp&&'Telp: '+s.telp,s.email,s.web].filter(Boolean).map(E).join(' · ')}${s.npwp?'<br>NPWP: '+E(s.npwp):''}</small></div></div>
 <h2 style="text-align:center;margin:14px 0 2px;${bdp?'color:var(--p)':''}">${inv?'INVOICE':bdp?'PENAWARAN PRODUK':'SURAT PENAWARAN HARGA'}</h2><p style="text-align:center;margin:0 0 12px">Nomor: ${E(x.nomor)}</p>
 <table style="border:0"><tr><td style="border:0">Tanggal: ${D(x.tanggal)}${inv&&x.due?'<br>Jatuh tempo: '+D(x.due):''}${x.ref?'<br>Ref. penawaran: '+E(x.ref):''}</td><td style="border:0">Kepada Yth.<br><b>${E(x.cname)}</b>${x.cpic?'<br>u.p. '+E(x.cpic):''}<br>${E(x.caddr)}</td></tr></table>
 <p>${bdp?'Proyek':'Perihal'}: <b>${E(x.perihal)}</b>${x.est?' · '+(bdp?'Deadline':'Estimasi')+': '+E(x.est):''}${!inv&&x.valid?' · Berlaku: '+E(x.valid):''}</p>

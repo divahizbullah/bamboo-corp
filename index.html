@@ -49,7 +49,7 @@ dialog{border:0;border-radius:14px;padding:18px;width:min(820px,96vw);max-height
 <div class="bc"><div class="lg" style="background:#0f2747">GSB</div><h2>CV. GOGO SUKSES BERSAMA</h2><small>Engineering & Technical Services</small><p>Solusi CCTV, AC, instalasi, maintenance, dan pengadaan teknik.</p><button class="pr" onclick="pickB('GSB')">MASUK DASHBOARD</button></div>
 <div class="bc"><div class="lg" style="background:#3b1458">BDP</div><h2>BAMBOO DIGITAL PRINTING</h2><small>BDP ART · Digital Printing & Creative</small><p>Solusi percetakan, desain grafis, advertising, dan kebutuhan cetak.</p><button class="pr" style="background:#3b1458" onclick="pickB('BDP')">MASUK DASHBOARD</button></div>
 </div></div></div>
-<div id="login" class="hide"><form onsubmit="doLogin(event)"><h2 id="lt"></h2><label>Email</label><input id="em" type="email" required><label>Kata sandi</label><input id="pw" type="password" required><p id="le" style="color:#b42318;font-size:13px"></p><button class="pr" style="width:100%">Masuk</button><p style="text-align:center"><a href="#" onclick="backPick();return false">← Pilih usaha lain</a></p></form></div>
+<div id="login" class="hide"><form onsubmit="doLogin(event)"><h2 id="lt"></h2><label>Username</label><input id="em" type="text" required autocomplete="username" autocapitalize="none" spellcheck="false"><label>Kata sandi</label><input id="pw" type="password" required><p id="le" style="color:#b42318;font-size:13px"></p><button class="pr" style="width:100%">Masuk</button><p style="text-align:center"><a href="#" onclick="backPick();return false">← Pilih usaha lain</a></p></form></div>
 <div id="app" class="hide"><div id="side"></div><div id="main"></div></div>
 <div id="doc" class="hide"></div><dialog id="dlg"><form method="dialog" id="fm"></form></dialog><div id="toast" class="hide"></div>
 <script type="module">
@@ -72,7 +72,7 @@ try{app=initializeApp(CFG);auth=getAuth(app);db=getFirestore(app)}catch(e){conso
 window.pickB=b=>{B=b;document.body.className=b;$('#pick').classList.add('hide');$('#login').classList.remove('hide');$('#lt').textContent='Masuk – '+NAMA[b]}
 window.backPick=()=>{B=null;document.body.className='';$('#login').classList.add('hide');$('#pick').classList.remove('hide')}
 window.doLogin=async e=>{e.preventDefault();$('#le').textContent='';if(!CFG.apiKey)return $('#le').textContent='Firebase Config belum diisi di index.html.';
-try{await signInWithEmailAndPassword(auth,$('#em').value,$('#pw').value)}catch(er){$('#le').textContent='Email atau kata sandi salah ('+er.code+')'}}
+try{const un=$('#em').value.trim().toLowerCase();await signInWithEmailAndPassword(auth,un+'@bamboocorp.app',$('#pw').value)}catch(er){$('#le').textContent='Username atau kata sandi salah ('+er.code+')'}}
 if(auth)onAuthStateChanged(auth,async u=>{if(!u||!B){U=null;return}
 try{const p=await getDoc(doc(db,'users',u.uid)),d=p.exists()?p.data():null;
 if(!d||!(d.businesses||[]).includes(B)){await signOut(auth);$('#le').textContent='Akun ini tidak punya akses ke '+B+'.';return}

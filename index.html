@@ -89,8 +89,8 @@ dialog{border:0;border-radius:14px;padding:18px;width:min(1000px,96vw);max-heigh
 .paper.bdpq{padding:10mm 14mm 22mm;font:10.5pt/1.5 Poppins,"Segoe UI",Arial,sans-serif;color:#222}
 .bdpq .qwm{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);width:130mm;opacity:.06;z-index:0;pointer-events:none}
 .bdpq .qin{position:relative;z-index:1;flex:1;display:flex;flex-direction:column}
-.bdpq .qlg{height:26mm;max-width:60mm;object-fit:contain;object-position:left;display:block}.bdpq .qnm{font-size:22pt;font-weight:800;color:#000;line-height:1.1}
-.bdpq .qal{font-size:8pt;line-height:1.5;margin-top:1mm;padding-left:2mm}.bdpq .qln{border-top:2px solid #000;margin-top:2mm}
+.bdpq .qhd{display:flex;align-items:center;gap:6mm}.bdpq .qtx{flex:1;min-width:0}.bdpq .qlg{flex:none;height:22mm;max-width:40mm;object-fit:contain;object-position:left;display:block}.bdpq .qnm{font-size:22pt;font-weight:800;color:#000;line-height:1.1}
+.bdpq .qal{font-size:8.5pt;line-height:1.5;margin-top:1mm;padding-left:0}.bdpq .qln{border-top:2px solid #000;margin-top:2mm}
 .bdpq .qdt{text-align:right;font-weight:700;margin:1mm 0 4mm}.bdpq p{margin:0 0 4mm}
 .paper.bdpq table.qtb{width:100%;border-collapse:collapse;margin:3mm 0 5mm}
 .paper.bdpq .qtb th{background:#ee1c25;color:#fff;font:700 11pt Georgia,serif;border:1.5px solid #ee1c25;padding:3mm;text-align:center}
@@ -499,7 +499,7 @@ rows=x.items.map((r,i)=>`<tr><td class="c">${i+1}</td><td>${E(r.n).toUpperCase()
 ex=[x.disc?['DISKON','- Rp. '+N(x.disc)]:0,x.ppn?['PPN '+x.ppn+'%','Rp. '+N((x.sub-x.disc)*x.ppn/100)]:0].filter(Boolean).map(([l,v])=>`<tr class="tl"><td colspan="4">${l}</td><td class="c">${v}</td></tr>`).join(''),
 nt=LN(x.tnc).map(z=>z.replace(/^[-•*]\s*/,'')),
 op=x.pembuka&&x.pembuka.trim()?E(x.pembuka).replace(/\n/g,'<br>'):`Sehubungan dengan permintaan Bapak/Ibu terkait penawaran harga ${E(x.perihal)}, bersama surat ini kami mengajukan penawaran harga sebagai berikut:`;
-return`<div class="paper bdpq">${s.logo?`<img class="qwm" src="${E(s.logo)}" alt="">`:''}<div class="qin">${s.logo?`<img class="qlg" src="${E(s.logo)}" alt="">`:''}<div class="qnm">BDP ART</div><div class="qal">${al}${s.email?'<br>'+E(s.email):''}${s.telp?'<br>HP : '+E(s.telp):''}</div><div class="qln"></div>
+return`<div class="paper bdpq">${s.logo?`<img class="qwm" src="${E(s.logo)}" alt="">`:''}<div class="qin"><div class="qhd">${s.logo?`<img class="qlg" src="${E(s.logo)}" alt="">`:''}<div class="qtx"><div class="qnm">BDP ART</div><div class="qal">${al}${s.email?'<br>'+E(s.email):''}${s.telp?'<br>HP : '+E(s.telp):''}</div></div></div><div class="qln"></div>
 <div class="qdt">${D(x.tanggal)}</div><p>Dengan hormat,</p><p>${op}</p>
 <table class="qtb"><thead><tr><th style="width:8%">No.</th><th>Produk</th><th style="width:9%">Unit</th><th colspan="2" style="width:32%">Harga</th></tr></thead><tbody>${rows}${ex}<tr class="tl"><td colspan="4">TOTAL</td><td class="c">Rp. ${N(x.total)}</td></tr></tbody></table>
 <p>Jika anda ingin menambah produk yang diinginkan mohon segera hubungi kontak kami. Kami berharap penawaran ini dapat dipertimbangkan dengan baik.</p><p>Demikian surat penawaran harga ini kami sampaikan. Atas perhatian dan kerjasamanya, kami ucapkan terima kasih.</p>

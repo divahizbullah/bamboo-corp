@@ -54,7 +54,7 @@ dialog{border:0;border-radius:14px;padding:18px;width:min(820px,96vw);max-height
 <div id="doc" class="hide"></div><dialog id="dlg"><form method="dialog" id="fm"></form></dialog><div id="toast" class="hide"></div>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import{getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import{getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,updatePassword,reauthenticateWithCredential,EmailAuthProvider,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import{getFirestore,collection,doc,getDoc,getDocs,setDoc,addDoc,deleteDoc,runTransaction,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 /* ISI DENGAN FIREBASE WEB CONFIG ANDA (Project settings > Your apps > Web app) */
 const CFG={apiKey:"AIzaSyC79IURaZhlsP8FX8SrcCc7o8eDPny6ba4",authDomain:"bamboocorp-1c074.firebaseapp.com",projectId:"bamboocorp-1c074",storageBucket:"bamboocorp-1c074.firebasestorage.app",messagingSenderId:"918778586590",appId:"1:918778586590:web:2d91c1a648d0df0258a94f"};
@@ -72,18 +72,30 @@ try{app=initializeApp(CFG);auth=getAuth(app);db=getFirestore(app)}catch(e){conso
 window.pickB=b=>{B=b;document.body.className=b;$('#pick').classList.add('hide');$('#login').classList.remove('hide');$('#lt').textContent='Masuk – '+NAMA[b]}
 window.backPick=()=>{B=null;document.body.className='';$('#login').classList.add('hide');$('#pick').classList.remove('hide')}
 window.doLogin=async e=>{e.preventDefault();$('#le').textContent='';if(!CFG.apiKey)return $('#le').textContent='Firebase Config belum diisi di index.html.';
-try{const un=$('#em').value.trim().toLowerCase();await signInWithEmailAndPassword(auth,un.includes('@')?un:un+'@bamboocorp.app',$('#pw').value)}catch(er){$('#le').textContent='Username atau kata sandi salah ('+er.code+')'}}
+try{const un=$('#em').value.trim().toLowerCase();window.DEFPW=$('#pw').value==='admin123';await signInWithEmailAndPassword(auth,un.includes('@')?un:un+'@bamboocorp.app',$('#pw').value)}catch(er){$('#le').textContent='Username atau kata sandi salah ('+er.code+')'}}
 if(auth)onAuthStateChanged(auth,async u=>{if(!u||!B){U=null;return}
 try{const p=await getDoc(doc(db,'users',u.uid)),d=p.exists()?p.data():null;
 if(!d||!(d.businesses||[]).includes(B)){await signOut(auth);$('#le').textContent='Akun ini tidak punya akses ke '+B+'.';return}
-U={uid:u.uid,email:u.email,role:d.role||'staff'};await loadAll();$('#login').classList.add('hide');$('#app').classList.remove('hide');go('dash')}
+U={uid:u.uid,email:u.email,role:d.role||'staff'};await loadAll();$('#login').classList.add('hide');$('#app').classList.remove('hide');go('dash');if(window.DEFPW)toast('Password masih bawaan. Segera ganti di menu Pengguna & Akun.')}
 catch(er){$('#le').textContent='Gagal memuat akses: '+(er.code||er.message)}});
+
+const mail=u=>u.includes('@')?u:u+'@bamboocorp.app';
+async function usrView(){const sn=await getDocs(collection(db,'users')),us=sn.docs.map(d=>({id:d.id,...d.data()}));
+const bx=(n,ch=['GSB','BDP'])=>['GSB','BDP'].map(b=>`<label style="display:inline-block;margin-right:12px"><input type="checkbox" name="${n}" value="${b}" ${ch.includes(b)?'checked':''} style="width:auto"> ${b}</label>`).join('');
+return`<div class="hd"><h2>Pengguna & Akun</h2></div>
+<form class="card" onsubmit="chPw(event)"><h3>Ganti password saya</h3><div class="r2">${F('old','Password lama','','password','required')}${F('nw','Password baru (min. 6 karakter)','','password','required minlength=6')}</div><p><button class="pr">Ganti password</button></p></form>
+<form class="card" onsubmit="addUsr(event)"><h3>Tambah pengguna</h3><div class="r2">${F('un','Username','','text','required pattern="[a-z0-9._-]{3,}" autocapitalize="none"')}${F('pw','Password (min. 6 karakter)','','password','required minlength=6')}</div><label>Peran</label><select name="role"><option value="staff">staff</option><option value="admin">admin</option></select><p>Akses usaha: ${bx('biz')}</p><p><button class="pr">Tambah</button></p></form>
+<div class="card"><h3>Daftar pengguna</h3><table><thead><tr><th>Username</th><th>Peran</th><th>Akses</th><th></th></tr></thead><tbody>${us.map(u=>`<tr><td>${E(u.username||u.id)}</td><td>${E(u.role)}</td><td>${E((u.businesses||[]).join(', '))}</td><td>${u.id==U.uid?'(Anda)':`<button onclick="delUsr('${u.id}')">Cabut akses</button>`}</td></tr>`).join('')}</tbody></table><p style="color:var(--m);font-size:13px">Password pengguna lain tidak bisa dilihat atau diubah dari sini. Jika lupa, cabut akses lalu tambahkan lagi dengan username berbeda, atau hapus akunnya di Firebase Console.</p></div>`}
+window.chPw=e=>{e.preventDefault();const f=new FormData(e.target);guard(async()=>{const u=auth.currentUser;await reauthenticateWithCredential(u,EmailAuthProvider.credential(u.email,f.get('old')));await updatePassword(u,f.get('nw'));toast('Password diganti');go('usr')})};
+window.addUsr=e=>{e.preventDefault();const f=new FormData(e.target),un=f.get('un').trim().toLowerCase(),biz=f.getAll('biz');if(!biz.length)return toast('Pilih minimal satu usaha');
+guard(async()=>{const a2=getAuth(initializeApp(CFG,'sec'+Date.now())),c=await createUserWithEmailAndPassword(a2,mail(un),f.get('pw'));await signOut(a2);await setDoc(doc(db,'users',c.user.uid),{username:un,role:f.get('role'),businesses:biz});toast('Pengguna ditambahkan');go('usr')})};
+window.delUsr=id=>{if(!confirm('Cabut akses pengguna ini?'))return;guard(async()=>{await deleteDoc(doc(db,'users',id));toast('Akses dicabut');go('usr')})};
 window.logout=async()=>{await signOut(auth);location.reload()};
 async function loadAll(){const s=await getDoc(doc(col('settings'),'main'));ST=s.exists()?s.data():{};CU=await list('customers')}
 const MENU=[['dash','Dashboard'],['cust','Data Pelanggan'],['quo','Daftar Penawaran'],['inv','Daftar Invoice'],['lap','Laporan'],['set','Pengaturan Usaha']];
-window.go=async v=>{$('#side').innerHTML=`<div class="br">${ST.logo?`<img src="${E(ST.logo)}" alt="">`:''}<span>${E(ST.nama||NAMA[B])}</span></div>`+MENU.map(([k,l])=>`<button class="${k==v?'on':''}" onclick="go('${k}')">${l}</button>`).join('')+`<button onclick="logout()">Logout</button>`;
+window.go=async v=>{$('#side').innerHTML=`<div class="br">${ST.logo?`<img src="${E(ST.logo)}" alt="">`:''}<span>${E(ST.nama||NAMA[B])}</span></div>`+MENU.concat(U.role=='admin'?[['usr','Pengguna & Akun']]:[]).map(([k,l])=>`<button class="${k==v?'on':''}" onclick="go('${k}')">${l}</button>`).join('')+`<button onclick="logout()">Logout</button>`;
 $('#main').innerHTML='<p>Memuat…</p>';await guard(async()=>{$('#main').innerHTML=await VIEW[v]()})}
-const VIEW={dash,cust,quo:()=>docList('quotations'),inv:()=>docList('invoices'),lap,set:setView};
+const VIEW={dash,cust,quo:()=>docList('quotations'),inv:()=>docList('invoices'),lap,set:setView,usr:usrView};
 const paid=i=>(i.payments||[]).reduce((a,p)=>a+(+p.jumlah||0),0);
 function stInv(i){if(i.status=='Dibatalkan'||i.status=='Draft')return i.status;const p=paid(i);if(i.total>0&&p>=i.total-0.5)return'Lunas';if(i.due&&i.due<td())return'Jatuh tempo';return p>0?'Dibayar sebagian':'Belum dibayar'}
 const cls=s=>/Lunas|Disetujui/.test(s)?'ok':/tempo|Ditolak|Batal/.test(s)?'x':/sebagian|Terkirim|Belum/.test(s)?'w':'';

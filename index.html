@@ -220,6 +220,9 @@ body.GSB #login{background:linear-gradient(135deg,#071c42,#1565c0)}body.BDP #log
 .nr.np{grid-template-areas:"n n n n x" "o q u h ."}
 .nr [name=pid]{grid-area:p}.nr>[name=n]{grid-area:n}.nr .no{grid-area:o;display:flex;gap:4px}.nr .no:empty{display:none}.nr>[name=q]{grid-area:q}.nr>[name=u]{grid-area:u}.nr>[name=h]{grid-area:h}.nr>.dg{grid-area:x}
 @media(max-width:800px){.nr,.nr.np{grid-template-columns:1fr 1fr 1fr auto;grid-template-areas:"p p p x" "n n n n" "o o o o" "q u h h"}.nr.np{grid-template-areas:"n n n x" "o o o o" "q u h h"}}
+html.nodel [onclick^="cDel"],html.nodel [onclick^="dDel"],html.nodel [onclick^="nDel"],html.nodel [onclick^="pDel"]{display:none!important}
+.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:3px 12px;min-width:260px}.pg label{display:flex;gap:6px;align-items:center;margin:0;color:var(--t);font-size:13px;cursor:pointer}
+.rl{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:var(--b);color:var(--m)}
 </style></head><body>
 <div id="pick" class="hide"><div class="in"><div class="bc dm"><div class="lg" style="background:#10332b">DM</div><div class="tx"><h2>DM CORP</h2><small>Administrator · Pusat Kontrol</small><p>Kelola akun login, atur akses GSB &amp; BDP, dan lihat laporan gabungan kedua usaha.</p></div><button class="pr" style="background:#10332b" onclick="pickB('DM')">MASUK ADMINISTRATOR</button></div>
 <div class="cards">
@@ -246,6 +249,13 @@ const col=(n,b=B)=>collection(db,'businesses',b,n);
 async function list(n,b=B){const s=await getDocs(col(n,b));return s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.tanggal||'')>(a.tanggal||'')?1:-1)}
 async function save(n,id,o){const now=serverTimestamp(),d={...o,businessId:B,updatedAt:now};if(id){await setDoc(doc(col(n),id),d,{merge:true});return id}d.createdAt=now;d.createdBy=U.email;return(await addDoc(col(n),d)).id}
 const guard=async f=>{try{await f()}catch(e){console.error(e);toast('Gagal: '+(e.code||e.message))}};
+/* ===== Peran & hak akses: admin / staff / pic ===== */
+const PERMS=[['dash','Dashboard'],['cust','Data Pelanggan'],['prd','Data Barang (BDP)'],['quo','Penawaran'],['inv','Invoice'],['mod','Modal Projek'],['nota','Buat Nota'],['mnota','Modal Nota'],['lap','Laporan'],['del','Hapus data']],
+ALLP=PERMS.map(x=>x[0]),PRESET={staff:['dash','cust','prd','quo','inv','nota'],pic:['dash','cust','quo','inv']},
+permsOf=u=>Array.isArray(u.perms)?u.perms:(u.role=='pic'?PRESET.pic:ALLP),
+can=k=>!!U&&(U.role=='admin'||permsOf(U).includes(k)),NODEL='Anda tidak punya izin menghapus data',
+menuOk=k=>B=='DM'||k=='pw'||(k=='dash'?can('dash'):k=='cust'?can('cust'):k=='db'?(can('cust')||can('prd')):k=='prj'?(can('quo')||can('inv')||can('mod')):k=='nl'?(can('nota')||can('mnota')):k=='lap'?can('lap'):true),
+firstTab=(c,L)=>can(c)?c:(L.find(k=>can(k))||c);
 try{app=initializeApp(CFG);auth=getAuth(app);db=getFirestore(app)}catch(e){console.error(e)}
 window.pickB=b=>{B=b;document.body.className=b;$('#pick').classList.add('hide');if(auth&&auth.currentUser){enter(auth.currentUser);return}$('#login').classList.remove('hide');$('#lt').textContent='Masuk – '+NAMA[b];applyLogos()}
 window.togglePw=()=>{const i=$('#pw');i.type=i.type=='password'?'text':'password';$('#eyei').style.opacity=i.type=='password'?1:.5}
@@ -257,9 +267,9 @@ const noAcc=m=>{$('#le').textContent=m;toast(m);if($('#login').classList.contain
 const enter=async(u,v)=>{if(!u||!B||ENT||U)return;ENT=1;
 try{const p=await getDoc(doc(db,'users',u.uid)),d=p.exists()?p.data():null;
 if(!d||(B=='DM'?d.role!='admin':d.role!='admin'&&!(d.businesses||[]).includes(B))){noAcc('Akun ini tidak punya akses ke '+(B=='DM'?'DM CORP (khusus administrator)':B)+'.');return}
-U={uid:u.uid,email:u.email,role:d.role||'staff',businesses:d.businesses||[]};await loadAll();syncLogos();$('#login').classList.add('hide');$('#pick').classList.add('hide');$('#app').classList.remove('hide');go(v&&menuFor().some(m=>m[0]==v)?v:(B=='DM'?'dmd':'dash'));if(window.DEFPW)toast('Password masih bawaan. Segera ganti password Anda.')}
+U={uid:u.uid,email:u.email,role:d.role||'staff',businesses:d.businesses||[],perms:d.perms};await loadAll();syncLogos();$('#login').classList.add('hide');$('#pick').classList.add('hide');$('#app').classList.remove('hide');go(v&&menuFor().some(m=>m[0]==v)?v:(B=='DM'?'dmd':menuFor()[0][0]));if(window.DEFPW)toast('Password masih bawaan. Segera ganti password Anda.')}
 catch(er){noAcc('Gagal memuat akses: '+(er.code||er.message))}finally{ENT=0}};
-const who=u=>{const w=$('#who');w.innerHTML='Masuk sebagai <b>'+E((u.email||'').replace('@bamboocorp.app',''))+'</b> · <a href="#" style="color:#fff" onclick="logout();return false">Keluar</a>';w.classList.remove('hide')};
+const who=u=>{const w=$('#who');w.innerHTML='Masuk sebagai <b>'+E((u.email||'').replace('@bamboocorp.app',''))+'</b>'+(U&&U.role=='pic'?' (PIC)':'')+' · <a href="#" style="color:#fff" onclick="logout();return false">Keluar</a>';w.classList.remove('hide')};
 if(auth)onAuthStateChanged(auth,u=>{const f=FIRST;FIRST=0;
 if(!u){U=null;$('#who').classList.add('hide');if(f)$('#pick').classList.remove('hide');return}
 who(u);
@@ -273,13 +283,18 @@ const mail=u=>u.includes('@')?u:u+'@bamboocorp.app';
 const pwForm=()=>`<form class="card" onsubmit="chPw(event)"><h3>Ganti password saya</h3><div class="r2">${F('old','Password lama','','password','required')}${F('nw','Password baru (min. 6 karakter)','','password','required minlength=6')}</div><p><button class="pr">Ganti password</button></p></form>`;
 async function pwView(){return`<div class="hd"><h2>Ganti Password</h2></div>`+pwForm()}
 const BZ=['GSB','BDP'],bxs=(n,ch=BZ,x='')=>BZ.map(b=>`<label style="display:inline-block;margin-right:12px"><input type="checkbox" name="${n}" value="${b}" ${ch.includes(b)?'checked':''} ${x} style="width:auto"> ${b}</label>`).join('');
+const pxs=(ch,dis,nm)=>`<div class="pg">${PERMS.map(([k,l])=>`<label><input type="checkbox" ${nm?`name="${nm}"`:''} data-p value="${k}" ${ch.includes(k)?'checked':''} ${dis?'disabled':''} style="width:auto"> ${l}</label>`).join('')}</div>`;
+window.presetP=sel=>{const c=sel.closest('tr')||sel.closest('form'),r=sel.value;c.querySelectorAll('input[data-p]').forEach(x=>{x.disabled=r=='admin';x.checked=r=='admin'||(PRESET[r]||[]).includes(x.value)})};
 async function usrView(){const sn=await getDocs(collection(db,'users')),us=sn.docs.map(d=>({id:d.id,...d.data()}));
 return`<div class="hd"><h2>Pengguna & Akses</h2></div>`+pwForm()+`
-<form class="card" onsubmit="addUsr(event)"><h3>Tambah pengguna</h3><div class="r2">${F('un','Username','','text','required pattern="[a-z0-9._-]{3,}" autocapitalize="none"')}${F('pw','Password (min. 6 karakter)','','password','required minlength=6')}</div><label>Peran</label><select name="role"><option value="staff">staff (hanya usaha yang dicentang)</option><option value="admin">admin (semua usaha + DM CORP)</option></select><p>Akses usaha: ${bxs('biz',[])}</p><p><button class="pr">Tambah</button></p></form>
-<div class="card sc"><h3>Atur akses pengguna</h3><table><thead><tr><th>Username</th><th>Peran</th><th>Akses usaha</th><th></th></tr></thead><tbody>${us.map(u=>`<tr data-u="${u.id}"><td>${E(u.username||u.id)}</td><td><select data-r>${['staff','admin'].map(r=>`<option ${u.role==r?'selected':''}>${r}</option>`).join('')}</select></td><td>${bxs('b_'+u.id,u.businesses||[])}</td><td><button class="pr" onclick="saveAcc('${u.id}')">Simpan</button> ${u.id==U.uid?'(Anda)':`<button class="dg" onclick="delUsr('${u.id}')">Cabut</button>`}</td></tr>`).join('')}</tbody></table><p style="color:var(--m);font-size:13px">Admin otomatis bisa masuk ke GSB, BDP, dan DM CORP. Staff hanya bisa masuk ke usaha yang dicentang. Password pengguna lain tidak bisa dilihat atau diubah dari sini; jika lupa, cabut akses lalu buat ulang dengan username lain.</p></div>`}
-window.saveAcc=id=>{const tr=document.querySelector(`tr[data-u="${id}"]`),r=tr.querySelector('[data-r]').value,biz=[...tr.querySelectorAll('input[type=checkbox]:checked')].map(x=>x.value);
+<form class="card" onsubmit="addUsr(event)"><h3>Tambah pengguna</h3><div class="r2">${F('un','Username','','text','required pattern="[a-z0-9._-]{3,}" autocapitalize="none"')}${F('pw','Password (min. 6 karakter)','','password','required minlength=6')}</div>
+<label>Peran</label><select name="role" onchange="presetP(this)"><option value="staff">staff (usaha dan fitur yang dicentang)</option><option value="pic">PIC (usaha dan fitur yang dicentang)</option><option value="admin">admin (semua usaha + DM CORP + semua fitur)</option></select>
+<p>Akses usaha: ${bxs('biz',[])}</p><label>Hak akses fitur (yang boleh dibuka dan dilakukan)</label>${pxs(PRESET.staff,false,'perm')}<p><button class="pr">Tambah</button></p></form>
+<div class="card sc"><h3>Atur akses pengguna</h3><table><thead><tr><th>Username</th><th>Peran</th><th>Akses usaha</th><th>Hak akses fitur</th><th></th></tr></thead><tbody>${us.map(u=>`<tr data-u="${u.id}"><td>${E(u.username||u.id)}</td><td><select data-r onchange="presetP(this)">${[['staff','staff'],['pic','PIC'],['admin','admin']].map(([r,l])=>`<option value="${r}" ${u.role==r?'selected':''}>${l}</option>`).join('')}</select></td><td>${bxs('b_'+u.id,u.businesses||[],'data-b')}</td><td>${pxs(u.role=='admin'?ALLP:permsOf(u),u.role=='admin')}</td><td><button class="pr" onclick="saveAcc('${u.id}')">Simpan</button> ${u.id==U.uid?'(Anda)':`<button class="dg" onclick="delUsr('${u.id}')">Cabut</button>`}</td></tr>`).join('')}</tbody></table><p style="color:var(--m);font-size:13px">Admin otomatis bisa masuk ke GSB, BDP, DM CORP dan semua fitur. Staff dan PIC hanya bisa masuk ke usaha yang dicentang dan hanya membuka fitur yang dicentang. Mengganti peran akan mengisi centang bawaan peran itu (staff: tanpa modal, laporan, dan hapus; PIC: dashboard, pelanggan, penawaran, invoice), lalu bisa Anda ubah dan simpan. Password pengguna lain tidak bisa dilihat atau diubah dari sini; jika lupa, cabut akses lalu buat ulang dengan username lain.</p></div>`}
+window.saveAcc=id=>{const tr=document.querySelector(`tr[data-u="${id}"]`),r=tr.querySelector('[data-r]').value,biz=[...tr.querySelectorAll('input[data-b]:checked')].map(x=>x.value),perms=[...tr.querySelectorAll('input[data-p]:checked')].map(x=>x.value);
 if(id==U.uid&&r!='admin')return toast('Anda tidak bisa menurunkan peran akun sendiri');
-guard(async()=>{await setDoc(doc(db,'users',id),{role:r,businesses:biz},{merge:true});toast('Akses disimpan');go('usr')})};
+if(r!='admin'&&!biz.length)return toast('Pilih minimal satu usaha');if(r!='admin'&&!perms.length)return toast('Pilih minimal satu hak akses fitur');
+guard(async()=>{await setDoc(doc(db,'users',id),{role:r,businesses:biz,perms:r=='admin'?ALLP:perms},{merge:true});toast('Akses disimpan');go('usr')})};
 const okInv=i=>!/Dibatalkan|Draft/.test(i.status||'');
 /* modal hanya dihitung untuk proyek yang sudah punya invoice; dibagi proporsional ke tiap invoice agar per bulan konsisten */
 const modalInv=PJ=>PJ.filter(p=>p.iv.length).reduce((a,p)=>a+p.md,0);
@@ -297,8 +312,8 @@ window.LB=window.LB||'GSB';
 async function dmLap(){const o=B;B=window.LB;let h;try{h=await lap()}finally{B=o}
 return`<div class="card"><label>Lihat laporan usaha</label><select onchange="LB=this.value;go('dml')">${BZ.map(b=>`<option value="${b}" ${b==LB?'selected':''}>${NAMA[b]}</option>`).join('')}</select></div>`+h}
 window.chPw=e=>{e.preventDefault();const f=new FormData(e.target);guard(async()=>{const u=auth.currentUser;await reauthenticateWithCredential(u,EmailAuthProvider.credential(u.email,f.get('old')));await updatePassword(u,f.get('nw'));toast('Password diganti');go('usr')})};
-window.addUsr=e=>{e.preventDefault();const f=new FormData(e.target),un=f.get('un').trim().toLowerCase(),biz=f.getAll('biz');if(!biz.length&&f.get('role')!='admin')return toast('Pilih minimal satu usaha');
-guard(async()=>{const a2=getAuth(initializeApp(CFG,'sec'+Date.now())),c=await createUserWithEmailAndPassword(a2,mail(un),f.get('pw'));await signOut(a2);await setDoc(doc(db,'users',c.user.uid),{username:un,role:f.get('role'),businesses:biz});toast('Pengguna ditambahkan');go('usr')})};
+window.addUsr=e=>{e.preventDefault();const f=new FormData(e.target),un=f.get('un').trim().toLowerCase(),role=f.get('role'),biz=f.getAll('biz'),perms=role=='admin'?ALLP:f.getAll('perm');if(!biz.length&&role!='admin')return toast('Pilih minimal satu usaha');if(!perms.length)return toast('Pilih minimal satu hak akses fitur');
+guard(async()=>{const a2=getAuth(initializeApp(CFG,'sec'+Date.now())),c=await createUserWithEmailAndPassword(a2,mail(un),f.get('pw'));await signOut(a2);await setDoc(doc(db,'users',c.user.uid),{username:un,role,businesses:biz,perms});toast('Pengguna ditambahkan');go('usr')})};
 window.delUsr=id=>{if(!confirm('Cabut akses pengguna ini?'))return;guard(async()=>{await deleteDoc(doc(db,'users',id));toast('Akses dicabut');go('usr')})};
 
 const getCfg=async b=>{const x=await getDoc(doc(col('settings',b),'main'));return nrm(x.exists()?x.data():{})};
@@ -326,11 +341,14 @@ window.saveCfg=e=>{e.preventDefault();const f=new FormData(e.target);guard(async
 window.logout=async()=>{try{localStorage.removeItem('ctx')}catch(e){}await signOut(auth);location.reload()};
 async function loadAll(){const s=await getDoc(doc(col('settings'),'main'));ST=nrm(s.exists()?s.data():{});setLogoCache(B,ST.logo);CU=await list('customers');if(B=='BDP')PR=await list('products')}
 const MENU_DM=[['dmd','Ringkasan Gabungan'],['dml','Laporan per Usaha'],['sGSB','Pengaturan Usaha GSB'],['sBDP','Pengaturan Usaha BDP'],['pap','Pengaturan Kertas'],['cfg','Config Upload & Logo'],['usr','Pengguna & Akses']];
-const menuFor=()=>B=='DM'?MENU_DM:(B=='BDP'?[MENU[0],['db','Database'],...MENU.slice(2)]:MENU).concat([['pw','Ganti Password']]);
+const menuFor0=()=>B=='DM'?MENU_DM:(B=='BDP'?[MENU[0],['db','Database'],...MENU.slice(2)]:MENU).concat([['pw','Ganti Password']]);
+const menuFor=()=>menuFor0().filter(m=>menuOk(m[0]));
 const swTargets=()=>['DM','GSB','BDP'].filter(x=>x!=B&&(U.role=='admin'||(x!='DM'&&(U.businesses||[]).includes(x))));
-window.swB=async b=>{if(!swTargets().includes(b))return toast('Akun ini tidak punya akses ke '+b);B=b;document.body.className=b;ST={};CU=[];await guard(async()=>{await loadAll();go(b=='DM'?'dmd':'dash')})};
+window.swB=async b=>{if(!swTargets().includes(b))return toast('Akun ini tidak punya akses ke '+b);B=b;document.body.className=b;ST={};CU=[];await guard(async()=>{await loadAll();go(b=='DM'?'dmd':menuFor()[0][0])})};
 const MENU=[['dash','Dashboard'],['cust','Data Pelanggan'],['prj','Daftar Projek'],['nl','Nota Langsung'],['lap','Laporan']];
-window.go=async v=>{const AL={quo:'prj',inv:'prj',mod:'prj',nota:'nl',mnota:'nl'};if(B=='BDP'&&(v=='cust'||v=='prd')){window.DT=v;v='db'}else if(AL[v]){if(v=='nota'||v=='mnota')window.NT=v;else window.PT=v;v=AL[v]}window.CV=v;$('#side').innerHTML=`<div class="br">${ST.logo?`<img src="${E(ST.logo)}" alt="">`:''}<span>${E(ST.nama||NAMA[B])}</span></div>`+menuFor().map(([k,l])=>`<button class="${k==v?'on':''}" onclick="go('${k}')">${IC[k]||'•'} ${l}</button>`).join('')+sbBottom();try{localStorage.setItem('ctx',JSON.stringify({b:B,v}))}catch(e){}
+window.go=async v=>{const GR={prj:['quo','inv','mod'],nl:['nota','mnota'],db:['cust','prd'],quo:['quo'],inv:['inv'],mod:['mod'],nota:['nota'],mnota:['mnota'],cust:['cust'],prd:['prd'],dash:['dash'],lap:['lap']};
+if(B!='DM'&&GR[v]&&!GR[v].some(k=>can(k))){toast('Anda tidak punya akses ke menu ini');v=menuFor()[0][0]}
+document.documentElement.classList.toggle('nodel',!can('del'));const AL={quo:'prj',inv:'prj',mod:'prj',nota:'nl',mnota:'nl'};if(B=='BDP'&&(v=='cust'||v=='prd')){window.DT=v;v='db'}else if(AL[v]){if(v=='nota'||v=='mnota')window.NT=v;else window.PT=v;v=AL[v]}window.CV=v;$('#side').innerHTML=`<div class="br">${ST.logo?`<img src="${E(ST.logo)}" alt="">`:''}<span>${E(ST.nama||NAMA[B])}</span></div>`+menuFor().map(([k,l])=>`<button class="${k==v?'on':''}" onclick="go('${k}')">${IC[k]||'•'} ${l}</button>`).join('')+sbBottom();try{localStorage.setItem('ctx',JSON.stringify({b:B,v}))}catch(e){}
 $('#main').innerHTML='<p>Memuat…</p>';await guard(async()=>{$('#main').innerHTML=banner()+await VIEW[v]();countUp()})}
 const VIEW={db:dbView,prj:prjView,nl:nlView,nota:notaView,mnota:mnotaView,dash,cust,quo:()=>docList('quotations'),inv:()=>docList('invoices'),lap,set:()=>setView(),sGSB:()=>setView('GSB'),sBDP:()=>setView('BDP'),usr:usrView,pw:pwView,dmd:dmDash,dml:dmLap,cfg:cfgView,pap:papView,prd:prdView,mod:modView};
 const paid=i=>(i.payments||[]).reduce((a,p)=>a+(+p.jumlah||0),0);
@@ -346,7 +364,7 @@ return`<div class="hd"><h2>Data Pelanggan</h2><button class="pr" onclick="cForm(
 const F=(n,l,v='',t='text',x='')=>`<div><label>${l}</label><input name="${n}" type="${t}" value="${E(v)}" ${x}></div>`;
 window.cForm=id=>{const c=CU.find(x=>x.id==id)||{};$('#fm').innerHTML=`<h3>${id?'Edit':'Tambah'} pelanggan</h3><div class="r2">${F('nama','Nama perusahaan / perorangan',c.nama,'text','required')}${F('pic','Nama PIC',c.pic)}${F('telp','Telepon / WhatsApp',c.telp)}${F('email','Email',c.email,'email')}${F('npwp','NPWP (opsional)',c.npwp)}</div><label>Alamat</label><textarea name="alamat" rows=2>${E(c.alamat)}</textarea><label>Catatan</label><textarea name="cat" rows=2>${E(c.cat)}</textarea><p><button type="button" onclick="$('#dlg').close()">Batal</button> <button class="pr">Simpan</button></p>`;
 $('#fm').onsubmit=e=>{e.preventDefault();guard(async()=>{await save('customers',id,Object.fromEntries(new FormData($('#fm'))));$('#dlg').close();toast('Pelanggan disimpan');go('cust')})};$('#dlg').showModal()}
-window.cDel=id=>{if(confirm('Hapus pelanggan ini?'))guard(async()=>{await deleteDoc(doc(col('customers'),id));toast('Dihapus');go('cust')})}
+window.cDel=id=>{if(!can('del'))return toast(NODEL);if(confirm('Hapus pelanggan ini?'))guard(async()=>{await deleteDoc(doc(col('customers'),id));toast('Dihapus');go('cust')})}
 window.cHist=async id=>{const c=CU.find(x=>x.id==id),a=[...(await list('quotations')).map(x=>({...x,j:'Penawaran'})),...(await list('invoices')).map(x=>({...x,j:'Invoice'}))].filter(x=>x.cid==id);
 $('#fm').innerHTML=`<h3>Riwayat – ${E(c.nama)}</h3><div class="sc"><table>${a.map(x=>`<tr><td>${D(x.tanggal)}</td><td>${x.j}</td><td>${E(x.nomor)}</td><td>${R(x.total)}</td><td>${E(x.status)}</td></tr>`).join('')||'<tr><td>Belum ada transaksi</td></tr>'}</table></div><button type="button" onclick="$('#dlg').close()">Tutup</button>`;$('#dlg').showModal()}
 const HQ=()=>B=='BDP'?['Produk','Ukuran','Bahan','Finishing']:['Barang / jasa','Spesifikasi'];
@@ -357,7 +375,7 @@ return`<div class="hd"><h2>Daftar ${inv?'Invoice':'Penawaran'}</h2><button class
 <div class="card sc"><table><tr><th>Nomor</th><th>Tanggal</th><th>Pelanggan</th><th>Total</th>${inv?'<th>Sisa</th>':''}<th>Status</th><th></th></tr>${rows.map(x=>`<tr><td>${E(x.nomor)}</td><td>${D(x.tanggal)}</td><td>${E(x.cname)}</td><td>${R(x.total)}</td>${inv?`<td>${R(x.total-paid(x))}</td>`:''}<td>${inv?`<span class="bg ${cls(x.s)}">${x.s}</span>`:`<select onchange="setSt('${n}','${x.id}',this.value)">${sts.map(o=>`<option ${o==x.status?'selected':''}>${o}</option>`).join('')}</select>`}</td>
 <td><select class="ak" onchange="akDo(this)"><option value="">Aksi…</option><option value="view|${n}|${x.id}">Lihat / PDF</option><option value="edit|${n}|${x.id}">Edit</option>${inv?`<option value="pay|${x.id}">Catat pembayaran</option><option value="cancel|${n}|${x.id}">Batalkan</option>`:`<option value="dup|${x.id}">Duplikat</option><option value="toinv|${x.id}">Jadikan invoice</option><option value="mod|${x.id}">Input modal proyek</option>`}<option value="del|${n}|${x.id}">Hapus</option></select></td></tr>`).join('')||'<tr><td colspan=7>Belum ada data.</td></tr>'}</table></div>`}
 window.setSt=(n,id,s)=>guard(async()=>{await save(n,id,{status:s});toast('Status: '+s);go(n=='invoices'?'inv':'quo');if(n=='quotations'&&s=='Disetujui'&&confirm('Penawaran disetujui. Buat invoice (untuk DP) sekarang?'))await toInv(id)});
-window.dDel=(n,id)=>{if(confirm('Hapus dokumen ini?'))guard(async()=>{await deleteDoc(doc(col(n),id));toast('Dihapus');go(n=='invoices'?'inv':'quo')})};
+window.dDel=(n,id)=>{if(!can('del'))return toast(NODEL);if(confirm('Hapus dokumen ini?'))guard(async()=>{await deleteDoc(doc(col(n),id));toast('Dihapus');go(n=='invoices'?'inv':'quo')})};
 const ROM=['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
 async function nextNo(type,tgl){const y=tgl.slice(0,4),m=+tgl.slice(5,7),k=type=='quotations'?'QUO':type=='notas'?'NOTA':'INV',ref=doc(col('counters'),k+'-'+y),f=ST.fmt||'{B}/{T}/{N}/{M}/{Y}';
 const n=await runTransaction(db,async t=>{const s=await t.get(ref),v=(s.exists()?s.data().last:0)+1;t.set(ref,{last:v,businessId:B,updatedAt:serverTimestamp()});return v});
@@ -434,10 +452,10 @@ return`<div class="hd"><h2>Modal Per Projek</h2><button onclick="csvLaba()">Expo
 <p style="color:var(--m);font-size:13px">Alur: ubah status penawaran menjadi <b>Disetujui</b> → buat invoice (isi DP bila sudah masuk) → catat pelunasan → isi modal proyek. Laba bersih = nilai proyek − modal.</p>`}
 window.csvLaba=()=>{const c=['nomor,tanggal,pelanggan,proyek,nilai_proyek,diterima,modal,laba_bersih,status',...(window.LP||[]).map(p=>[p.x.nomor,p.x.tanggal,p.x.cname,p.x.perihal,p.nilai,p.pd,p.md,p.lb,p.st].map(z=>'"'+String(z??'').replace(/"/g,'""')+'"').join(','))].join('\n'),l=document.createElement('a');l.href=URL.createObjectURL(new Blob([c],{type:'text/csv'}));l.download=B+'-laba-'+td()+'.csv';l.click()};
 
-const tabsBar=(cur,L)=>`<div class="tabs">${L.map(([k,l])=>`<button class="${k==cur?'pr':''}" onclick="go('${k}')">${l}</button>`).join('')}</div>`;
-async function dbView(){const t=window.DT||'prd';return tabsBar(t,[['prd','Data Barang'],['cust','Data Pelanggan']])+await VIEW[t]()}
-async function prjView(){const t=window.PT||'quo';return tabsBar(t,[['quo','Penawaran'],['inv','Invoice'],['mod','Modal Projek']])+await VIEW[t]()}
-async function nlView(){const t=window.NT||'nota';return tabsBar(t,[['nota','Buat Nota'],['mnota','Modal Nota']])+await VIEW[t]()}
+const tabsBar=(cur,L)=>`<div class="tabs">${L.filter(([k])=>can(k)).map(([k,l])=>`<button class="${k==cur?'pr':''}" onclick="go('${k}')">${l}</button>`).join('')}</div>`;
+async function dbView(){const t=firstTab(window.DT||'prd',['prd','cust']);return tabsBar(t,[['prd','Data Barang'],['cust','Data Pelanggan']])+await VIEW[t]()}
+async function prjView(){const t=firstTab(window.PT||'quo',['quo','inv','mod']);return tabsBar(t,[['quo','Penawaran'],['inv','Invoice'],['mod','Modal Projek']])+await VIEW[t]()}
+async function nlView(){const t=firstTab(window.NT||'nota',['nota','mnota']);return tabsBar(t,[['nota','Buat Nota'],['mnota','Modal Nota']])+await VIEW[t]()}
 /* ===== NOTA: pembuatan nota langsung (tanpa penawaran) + Modal Nota ===== */
 const ntSum=L=>L.reduce((a,n)=>a+(+n.total||0),0),ntMod=L=>L.reduce((a,n)=>a+(+n.modalTotal||0),0),hasMod=n=>!!(n.modal&&n.modal.length);
 const TB=n=>{n=Math.round(Math.abs(+n||0));const s=['','satu','dua','tiga','empat','lima','enam','tujuh','delapan','sembilan','sepuluh','sebelas'];
@@ -470,7 +488,7 @@ const o={cid:fd.get('cid')||'',cname:fd.get('cname').trim(),caddr:fd.get('caddr'
 if(!id){o.nomor=await nextNo('notas',o.tanggal);o.modal=[];o.modalTotal=0}
 await save('notas',id,o);$('#dlg').close();toast('Nota tersimpan: '+(o.nomor||'perubahan'));go('nota')})};
 nCalc();$('#dlg').showModal()});
-window.nDel=id=>{if(confirm('Hapus nota ini? Pemasukan dan modal nota ikut terhapus dari laporan.'))guard(async()=>{await deleteDoc(doc(col('notas'),id));toast('Nota dihapus');go(window.CV||'nota')})};
+window.nDel=id=>{if(!can('del'))return toast(NODEL);if(confirm('Hapus nota ini? Pemasukan dan modal nota ikut terhapus dari laporan.'))guard(async()=>{await deleteDoc(doc(col('notas'),id));toast('Nota dihapus');go(window.CV||'nota')})};
 async function notaView(){const L=await list('notas'),q=(window.NQ||'').toLowerCase(),m=window.NM||'',ks=[...new Set(L.map(n=>(n.tanggal||'').slice(0,7)))].sort().reverse(),
 rows=L.filter(n=>(!m||(n.tanggal||'').slice(0,7)==m)&&JSON.stringify([n.nomor,n.cname,n.ctelp]).toLowerCase().includes(q)),c=(l,v)=>`<div class="card st"><b>${v}</b><span>${l}</span></div>`;
 return`<div class="hd"><h2>Pembuatan Nota</h2><button class="pr" onclick="nForm()">+ Buat nota</button></div>
@@ -541,7 +559,7 @@ $('#fm').innerHTML=`<h3>${id?'Edit':'Tambah'} barang</h3><div class="r2">${F('na
 <div id="pm1">${F('harga','Harga (Rp)',p.harga,'number','min=0 step=any')}</div><div id="pm2" class="hide"><label>Daftar ukuran dan harga (satu per baris, format: ukuran = harga)</label><textarea name="tabel" rows="5" placeholder="10 x 10 cm = 55000&#10;20 x 20 cm = 120000">${E(p.tabel)}</textarea></div>
 <p><button type="button" onclick="$('#dlg').close()">Batal</button> <button class="pr">Simpan</button></p>`;
 $('#fm').onsubmit=e=>{e.preventDefault();guard(async()=>{const d=Object.fromEntries(new FormData($('#fm')));d.harga=+d.harga||0;await save('products',id,d);$('#dlg').close();toast('Barang disimpan');go('prd')})};pMode(p.mode||'m2');$('#dlg').showModal()}
-window.pDel=id=>{if(confirm('Hapus barang ini? Penawaran/invoice lama tidak berubah.'))guard(async()=>{await deleteDoc(doc(col('products'),id));toast('Dihapus');go('prd')})};
+window.pDel=id=>{if(!can('del'))return toast(NODEL);if(confirm('Hapus barang ini? Penawaran/invoice lama tidak berubah.'))guard(async()=>{await deleteDoc(doc(col('products'),id));toast('Dihapus');go('prd')})};
 const ukCell=(p,r={})=>{
 if(p&&p.mode=='m2')return`<div style="display:flex;gap:4px;align-items:center"><input name="pj" type="number" min="0" step="any" placeholder="P cm" value="${r.pj||''}" oninput="rowP(this)"><span>×</span><input name="lb" type="number" min="0" step="any" placeholder="L cm" value="${r.lb||''}" oninput="rowP(this)"></div><input type="hidden" name="a" value="${E(r.a)}">`;
 if(p&&p.mode=='tabel')return`<select name="a" onchange="rowP(this)"><option value="">Pilih ukuran</option>${parseTb(p.tabel).map(t=>`<option ${t.u==r.a?'selected':''}>${E(t.u)}</option>`).join('')}</select>`;

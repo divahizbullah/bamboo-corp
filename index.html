@@ -223,6 +223,63 @@ body.GSB #login{background:linear-gradient(135deg,#071c42,#1565c0)}body.BDP #log
 html.nodel [onclick^="cDel"],html.nodel [onclick^="dDel"],html.nodel [onclick^="nDel"],html.nodel [onclick^="pDel"]{display:none!important}
 .pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:3px 12px;min-width:260px}.pg label{display:flex;gap:6px;align-items:center;margin:0;color:var(--t);font-size:13px;cursor:pointer}
 .rl{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:var(--b);color:var(--m)}
+
+/* ===== MOBILE: top bar + drawer, tabel jadi kartu, dialog bottom-sheet ===== */
+#mtop,#ovl{display:none}
+@media screen and (max-width:800px){
+html{-webkit-text-size-adjust:100%}
+#app{display:block}
+#mtop{display:flex;position:sticky;top:0;z-index:40;align-items:center;gap:10px;padding:8px 12px;background:var(--p);color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+#mtop button{flex:none;width:42px;height:42px;min-height:0;padding:0;font-size:22px;line-height:1;background:rgba(255,255,255,.16);color:#fff;border:0;border-radius:10px}
+#mtop .mtx{flex:1;min-width:0;line-height:1.2}
+#mtop small{display:block;font-size:11px;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#mtop b{display:block;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#mtop .mtg{flex:none;font-size:11px;font-weight:800;letter-spacing:1px;padding:4px 9px;border-radius:99px;background:#fff;color:var(--p)}
+body.GSB #mtop{border-bottom:3px solid var(--a2)}
+body.BDP #mtop{background:linear-gradient(100deg,#4a148c,#c026d3)}
+#ovl{display:block;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:55;opacity:0;pointer-events:none;transition:opacity .25s}
+body.nav-open #ovl{opacity:1;pointer-events:auto}
+body.nav-open{overflow:hidden}
+#side{position:fixed;top:0;left:0;bottom:0;height:100dvh;width:82%;max-width:310px;z-index:60;flex-direction:column;flex-wrap:nowrap;overflow-y:auto;padding:16px 12px;transform:translateX(-105%);transition:transform .26s ease;border-radius:0!important;box-shadow:6px 0 24px rgba(0,0,0,.3)}
+body.nav-open #side{transform:none}
+#side .br,#side .sb{width:auto}
+#side button{padding:13px 12px;font-size:15px;min-height:0}
+#main{padding:12px 12px 90px}
+.mb{display:none}
+.hd{gap:8px}.hd h2{font-size:19px}.hd>button.pr{width:100%}
+.card{padding:12px;margin-bottom:10px}
+.grid{grid-template-columns:1fr 1fr;gap:8px}.grid>.card{margin-bottom:0}
+.st b{font-size:16px;word-break:break-word}.st span{font-size:12px}
+.tabs{flex-wrap:nowrap;overflow-x:auto;margin:0 -12px 12px;padding:0 12px 4px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}.tabs button{flex:none;white-space:nowrap}
+input,select,textarea,button{font-size:16px}
+input:not([type=checkbox]):not([type=radio]):not([type=file]),select,textarea{min-height:44px}
+button{min-height:42px;padding:8px 14px}
+.ak{width:100%;min-width:0}
+.sc{overflow-x:visible}
+#main .sc table:not(.rs) td,#main .sc table:not(.rs) th{padding:6px 5px;font-size:13px}
+table.rs,table.rs thead,table.rs tbody,table.rs tr,table.rs td{display:block;width:100%}
+table.rs .rh{display:none}
+table.rs tr{border:1px solid var(--b);border-radius:12px;padding:6px 12px;margin-bottom:10px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+table.rs td{position:relative;border:0;border-bottom:1px dashed var(--b);padding:7px 0 7px 40%;min-height:34px;text-align:left;word-break:break-word}
+table.rs td:last-child{border-bottom:0}
+table.rs td::before{content:attr(data-label);position:absolute;left:0;top:8px;width:36%;font-size:12px;color:var(--m);line-height:1.3}
+table.rs td:first-child{padding-left:0;font-weight:600;font-size:15px;border-bottom:1px solid var(--b)}
+table.rs td:first-child::before,table.rs td[data-label=""]::before,table.rs td:not([data-label])::before{content:none}
+table.rs td[data-label=""],table.rs td:not([data-label]),table.rs td.wide{padding-left:0}
+table.rs td.wide::before{content:attr(data-label);position:static;display:block;width:auto;margin-bottom:4px}
+.pg{min-width:0;grid-template-columns:1fr 1fr}
+dialog,#dlg2{width:100%!important;max-width:100%;margin:auto 0 0;max-height:94dvh;border-radius:18px 18px 0 0;padding:16px 14px 0}
+dialog form>p:last-child{position:sticky;bottom:0;z-index:3;display:flex;gap:8px;background:#fff;margin:12px -14px 0;padding:10px 14px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--b)}
+dialog form>p:last-child button{flex:1}
+#fm .mr{grid-template-columns:1fr auto!important}#fm .mr [name=mk]{grid-column:1/-1}
+#toast{left:12px;right:12px;bottom:14px;text-align:center}
+#doc{padding:8px}
+#doc .tb{position:sticky;top:0;z-index:5;flex-wrap:wrap;background:#555;padding:4px 0 8px;margin-bottom:6px}
+#doc .tb button,#doc .tb select{flex:1 1 auto;min-width:0}
+#pick h1{font-size:21px}.bc{padding:18px}#pick .dm button{width:100%}
+#login form{padding:20px}
+}
 </style></head><body>
 <div id="pick" class="hide"><div class="in"><div class="bc dm"><div class="lg" style="background:#10332b">DM</div><div class="tx"><h2>DM CORP</h2><small>Administrator · Pusat Kontrol</small><p>Kelola akun login, atur akses GSB &amp; BDP, dan lihat laporan gabungan kedua usaha.</p></div><button class="pr" style="background:#10332b" onclick="pickB('DM')">MASUK ADMINISTRATOR</button></div>
 <div class="cards">
@@ -230,7 +287,7 @@ html.nodel [onclick^="cDel"],html.nodel [onclick^="dDel"],html.nodel [onclick^="
 <div class="bc"><div class="lg" style="background:#3b1458">BDP</div><h2>BAMBOO DIGITAL PRINTING</h2><small>BDP ART · Digital Printing & Creative</small><p>Solusi percetakan, desain grafis, advertising, dan kebutuhan cetak.</p><button class="pr" style="background:#3b1458" onclick="pickB('BDP')">MASUK DASHBOARD</button></div>
 </div><p id="who" class="hide" style="text-align:center;color:#fff;margin-top:16px;font-size:14px"></p></div></div>
 <div id="login" class="hide"><form onsubmit="doLogin(event)"><div id="lgl"></div><h2 id="lt"></h2><label>Username</label><input id="em" type="text" required autocomplete="username" autocapitalize="none" spellcheck="false"><label>Kata sandi</label><div style="position:relative"><input id="pw" type="password" required autocomplete="current-password" style="padding-right:44px"><button type="button" onclick="togglePw()" aria-label="Lihat / sembunyikan password" style="position:absolute;right:4px;top:50%;transform:translateY(-50%);border:0;background:none;padding:6px 8px;cursor:pointer;color:#667085;line-height:0"><svg id="eyei" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div><label style="display:flex;gap:8px;align-items:center;margin-top:12px;font-size:14px;cursor:pointer"><input id="kp" type="checkbox" checked style="width:auto;margin:0"> Tetap masuk di perangkat ini</label><p id="le" style="color:#b42318;font-size:13px"></p><button class="pr" style="width:100%">Masuk</button><p style="text-align:center"><a href="#" onclick="backPick();return false">← Pilih usaha lain</a></p></form></div>
-<div id="app" class="hide"><div id="side"></div><div id="main"></div></div>
+<div id="app" class="hide"><div id="mtop"><button type="button" onclick="navT()" aria-label="Menu">☰</button><div class="mtx"><small id="mts"></small><b id="mtt"></b></div><span class="mtg" id="mtg"></span></div><div id="ovl" onclick="navT()"></div><div id="side"></div><div id="main"></div></div>
 <div id="doc" class="hide"></div><dialog id="dlg"><form method="dialog" id="fm"></form></dialog><dialog id="dlg2"><form method="dialog" id="fm2"></form></dialog><div id="toast" class="hide"></div>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -365,10 +422,14 @@ const menuFor=()=>menuFor0().filter(m=>menuOk(m[0]));
 const swTargets=()=>['DM','GSB','BDP'].filter(x=>x!=B&&(U.role=='admin'||(x!='DM'&&(U.businesses||[]).includes(x))));
 window.swB=async b=>{if(!swTargets().includes(b))return toast('Akun ini tidak punya akses ke '+b);B=b;document.body.className=b;ST={};CU=[];await guard(async()=>{await loadAll();go(b=='DM'?'dmd':menuFor()[0][0])})};
 const MENU=[['dash','Dashboard'],['cust','Data Pelanggan'],['prj','Daftar Projek'],['nl','Nota Langsung'],['lap','Laporan']];
-window.go=async v=>{const GR={prj:['quo','inv','mod'],nl:['nota','mnota'],db:['cust','prd'],quo:['quo'],inv:['inv'],mod:['mod'],nota:['nota'],mnota:['mnota'],cust:['cust'],prd:['prd'],dash:['dash'],lap:['lap']};
+window.navT=()=>document.body.classList.toggle('nav-open');
+window.mTopSet=v=>{const m=menuFor().find(x=>x[0]==v);$('#mts').textContent=ST.nama||NAMA[B];$('#mtt').textContent=m?m[1]:'';$('#mtg').textContent=B=='DM'?'ADMIN':B};
+window.mobTables=()=>document.querySelectorAll('#main table').forEach(t=>{const rs=[...t.rows],hr=rs.find(r=>r.querySelector('th'));if(!hr)return;const hs=[...hr.cells].map(c=>c.textContent.trim());hr.classList.add('rh');t.classList.add('rs');rs.forEach(r=>{if(r===hr)return;let i=0;[...r.cells].forEach(c=>{if(c.colSpan>1){i+=c.colSpan;return}c.dataset.label=hs[i]||'';if(c.querySelector('.pg,textarea'))c.classList.add('wide');i++})})});
+addEventListener('resize',()=>{const d=$('#doc');if(d&&!d.classList.contains('hide')&&window.applyPaper)applyPaper()});
+window.go=async v=>{document.body.classList.remove('nav-open');const GR={prj:['quo','inv','mod'],nl:['nota','mnota'],db:['cust','prd'],quo:['quo'],inv:['inv'],mod:['mod'],nota:['nota'],mnota:['mnota'],cust:['cust'],prd:['prd'],dash:['dash'],lap:['lap']};
 if(B!='DM'&&GR[v]&&!GR[v].some(k=>can(k))){toast('Anda tidak punya akses ke menu ini');v=menuFor()[0][0]}
 document.documentElement.classList.toggle('nodel',!can('del'));const AL={quo:'prj',inv:'prj',mod:'prj',nota:'nl',mnota:'nl'};if(B=='BDP'&&(v=='cust'||v=='prd')){window.DT=v;v='db'}else if(AL[v]){if(v=='nota'||v=='mnota')window.NT=v;else window.PT=v;v=AL[v]}window.CV=v;$('#side').innerHTML=`<div class="br">${ST.logo?`<img src="${E(ST.logo)}" alt="">`:''}<span>${E(ST.nama||NAMA[B])}</span></div>`+menuFor().map(([k,l])=>`<button class="${k==v?'on':''}" onclick="go('${k}')">${IC[k]||'•'} ${l}</button>`).join('')+sbBottom();try{localStorage.setItem('ctx',JSON.stringify({b:B,v}))}catch(e){}
-$('#main').innerHTML='<p>Memuat…</p>';await guard(async()=>{$('#main').innerHTML=banner()+await VIEW[v]();countUp()})}
+$('#main').innerHTML='<p>Memuat…</p>';mTopSet(v);await guard(async()=>{$('#main').innerHTML=banner()+await VIEW[v]();countUp();mobTables()})}
 const VIEW={db:dbView,prj:prjView,nl:nlView,nota:notaView,mnota:mnotaView,dash,cust,quo:()=>docList('quotations'),inv:()=>docList('invoices'),lap,set:()=>setView(),sGSB:()=>setView('GSB'),sBDP:()=>setView('BDP'),usr:usrView,pw:pwView,dmd:dmDash,dml:dmLap,cfg:cfgView,pap:papView,prd:prdView,mod:modView};
 const paid=i=>(i.payments||[]).reduce((a,p)=>a+(+p.jumlah||0),0);
 function stInv(i){if(i.status=='Dibatalkan'||i.status=='Draft')return i.status;const p=paid(i);if(i.total>0&&p>=i.total-0.5)return'Lunas';if(i.due&&i.due<td())return'Jatuh tempo';return p>0?'Dibayar sebagian':'Belum dibayar'}
@@ -695,7 +756,7 @@ window.pkSel=()=>{window.PK=defPK();const c=papCfg(ST.paper);return`<select id="
 window.setPK=k=>{window.PK=k;applyPaper()};
 window.applyPaper=()=>{const c=papCfg(ST.paper),k=window.PK||c.size,d=k=='C'?{w:c.w,h:c.h}:PAP[k]||PAP.A4,z=(c.scale/100).toFixed(3);
 let el=document.getElementById('pgcss');if(el)el.remove();el=document.createElement('style');el.id='pgcss';
-el.textContent=`.paper{width:${d.w}mm;min-height:${d.h-1}mm!important;zoom:${z}}.paper{width:calc(${d.w}mm/${z})}.paper{min-height:calc(${d.h-1}mm/${z})!important}@media print{@page{size:${d.w}mm ${d.h}mm;margin:0}.paper{width:calc(${d.w}mm/${z})!important;max-width:none!important;margin:0!important}}`;
+el.textContent=`.paper{width:${d.w}mm;min-height:${d.h-1}mm!important;zoom:${z}}.paper{width:calc(${d.w}mm/${z})}.paper{min-height:calc(${d.h-1}mm/${z})!important}@media print{@page{size:${d.w}mm ${d.h}mm;margin:0}.paper{width:calc(${d.w}mm/${z})!important;max-width:none!important;margin:0!important}}@media screen and (max-width:800px){.paper{max-width:none!important;zoom:${(z*(innerWidth-16)/(d.w*3.7795)).toFixed(3)}!important}}`;
 document.head.appendChild(el)};
 async function papView(){const C={GSB:(await getCfg('GSB')).paper,BDP:(await getCfg('BDP')).paper};
 const card=b=>{const c=papCfg(C[b]);return`<form class="card" onsubmit="savePap(event,'${b}')"><h3>${NAMA[b]}</h3><div class="r2"><div><label>Ukuran kertas bawaan</label><select name="size" onchange="this.form.querySelector('.cw').classList.toggle('hide',this.value!='C')">${Object.entries(PAP).map(([k,v])=>`<option value="${k}" ${c.size==k?'selected':''}>${v.l}</option>`).join('')}<option value="C" ${c.size=='C'?'selected':''}>Kustom (isi sendiri)</option></select></div>${F('scale','Skala cetak (%) — 100 = normal',c.scale,'number','min=50 max=150 step=1')}</div><div class="r2 cw ${c.size=='C'?'':'hide'}">${F('w','Lebar kertas (mm)',c.w,'number','min=100 max=600 step=any')}${F('h','Tinggi kertas (mm)',c.h,'number','min=100 max=900 step=any')}</div><p><button class="pr">Simpan</button></p></form>`};
